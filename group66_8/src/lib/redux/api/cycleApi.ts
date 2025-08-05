@@ -1,5 +1,4 @@
-import { CreateCyclePayload } from "../types/createCyclePayload";
-import { Cycle } from "../types/cycle";
+import { CreateCyclePayload, Cycle } from "../types/cycle";
 import { baseApi } from "./baseApi";
 
 export const cycleApi = baseApi.injectEndpoints({

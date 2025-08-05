@@ -5,3 +5,8 @@ export interface Cycle {
   created_at: string;
   is_active: string;
 }
+export interface CreateCyclePayload {
+  name: string;
+  start_date: string;
+  end_date: string;
+}

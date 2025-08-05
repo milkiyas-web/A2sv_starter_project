@@ -21,6 +21,6 @@ export const baseApi = createApi({
   baseQuery: async (parseArgs, ApiError, extraOptions) => {
     return baseQuery(parseArgs, ApiError, extraOptions);
   },
-  tagTypes: ["Cycle", "Application"],
+  tagTypes: ["Cycle", "Application", "User", "Profile"],
   endpoints: () => ({}),
 });
