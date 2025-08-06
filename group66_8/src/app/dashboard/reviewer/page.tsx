@@ -1,4 +1,3 @@
-// src/app/dashboard/reviewer/page.tsx
 "use client";
 
 import { Card } from "@/components/ui/card";
