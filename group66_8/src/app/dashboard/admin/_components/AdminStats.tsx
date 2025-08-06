@@ -14,7 +14,7 @@ const AdminStats = () => {
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error loading users</div>;
 
-    const getTotalUsers = () => data.data.total_count;
+    const getTotalUsers = () => data?.data.total_count;
 
     const getTotalActiveCycles = () => {
         return cycleData?.data?.cycles?.filter((cycle: Cycle) => cycle.is_active).length || 0;
