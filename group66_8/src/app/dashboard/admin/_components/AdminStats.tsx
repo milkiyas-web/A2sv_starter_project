@@ -8,9 +8,13 @@ import { CardComponent } from './CardComponent';
 
 const AdminStats = () => {
     const { data: cycleData } = useGetCycleQuery();
-    const { data: users = [] } = useGetusersQuery();
+    // const { data: users = [] } = useGetusersQuery(); 
+    const { data, isLoading, error } = useGetusersQuery({ page: 1, limit: 4 });
 
-    const getTotalUsers = () => users.length;
+    if (isLoading) return <div>Loading...</div>;
+    if (error) return <div>Error loading users</div>;
+
+    const getTotalUsers = () => data.data.total_count;
 
     const getTotalActiveCycles = () => {
         return cycleData?.data?.cycles?.filter((cycle: Cycle) => cycle.is_active).length || 0;
@@ -25,6 +29,7 @@ const AdminStats = () => {
         { title: 'Total Applicants', num: getTotalApplicants() },
         { title: 'Active Cycles', num: getTotalActiveCycles() },
     ];
+    console.log(stats)
 
     return (
         <div className="flex justify-center py-3">

@@ -16,6 +16,16 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
+export const internalApi = createApi({
+  reducerPath: "internalApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/api",
+  }),
+  tagTypes: ["User"],
+
+  endpoints: () => ({}),
+});
+
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: async (parseArgs, ApiError, extraOptions) => {
