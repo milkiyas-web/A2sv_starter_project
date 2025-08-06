@@ -27,7 +27,7 @@ function SigninAdmin() {
       role: "Admin",
       rememberme: rememberMe,
       redirect: false, // Keep redirect false for manual control
-      callbackUrl: "/Dashboard",
+      callbackUrl: "/dashboard/admin",
     });
 
     if (res?.error) {
@@ -35,7 +35,7 @@ function SigninAdmin() {
       console.error("Sign-in error:", res.error);
     } else {
       // Use router.push instead of window.location.href
-      router.push("/Dashboard");
+      router.push("/dashboard/admin");
     }
   };
 
@@ -88,7 +88,7 @@ function SigninAdmin() {
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center pointer justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white cursor-pointer flex items-center justify-center space-x-2"
           >
             <FaLock />
             <span>Sign in</span>
