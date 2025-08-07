@@ -3,11 +3,12 @@ import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation"; // Import useRouter
+import { useRouter } from "next/navigation"; 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
-import path from "../../../../public/images/logo-blue.svg fill.svg";
+import Image from "next/image";
+import { Logo } from "@/lib";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -33,7 +34,7 @@ function SigninAdmin() {
     await getSession();
     router.refresh()
       
-      router.push("/createcycles");
+      router.push("/dashboard/admin");
     }
   };
 
@@ -41,7 +42,7 @@ function SigninAdmin() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          <img src={path.src} alt="A2sv image" className="h-16" />
+          <Image src={Logo} alt="A2sv image" className="h-16" />
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
