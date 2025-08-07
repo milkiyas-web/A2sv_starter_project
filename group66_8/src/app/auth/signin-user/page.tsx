@@ -84,7 +84,7 @@ function SigninUser() {
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center cursor-pointer justify-center space-x-2"
           >
             <FaLock />
             <span>Sign in</span>

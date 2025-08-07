@@ -1,18 +1,19 @@
 import {
   CreateUserPayload,
   DeleteUserPayload,
+  GetUsersParams,
+  GetusersResponse,
   UpdateUserPayload,
   User,
 } from "../types/users";
-import { baseApi } from "./baseApi";
+import { baseApi, internalApi } from "./baseApi";
 
-export const userApi = baseApi.injectEndpoints({
+export const userApi = internalApi.injectEndpoints({
   endpoints: (build) => ({
-    getusers: build.query<User[], void>({
-      query: (payload) => ({
-        url: "/admin/users",
+    getusers: build.query<GetusersResponse, GetUsersParams>({
+      query: ({ page = 1, limit = 4 }) => ({
+        url: `get-users?page=${page}&limit=${limit}`,
         method: "GET",
-        body: payload,
       }),
       providesTags: ["User"],
     }),

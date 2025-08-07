@@ -20,3 +20,20 @@ export interface DeleteUserPayload {
   full_name: string;
   id: stirng;
 }
+
+export interface GetusersResponse {
+  success: boolean;
+  data: {
+    items: User[];
+    count: number;
+    total_count: number;
+    page: number;
+    limit: number;
+  };
+  message: string;
+}
+
+export type GetUsersParams = {
+  page?: number;
+  limit?: number;
+};
