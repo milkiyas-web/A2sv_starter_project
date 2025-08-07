@@ -1,16 +1,13 @@
 "use client";
-// import { User } from "@/types/globaltype";
+import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation"; // Import useRouter
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import path from "../../../../public/images/logo-blue.svg fill.svg";
-import Image from "next/image";
-import { User } from "../../../../types/globaltype";
-import { Logo } from "@/lib";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -26,15 +23,17 @@ function SigninAdmin() {
       password: data.password,
       role: "Admin",
       rememberme: rememberMe,
-      redirect: false, // Keep redirect false for manual control
-      callbackUrl: "/dashboard/admin",
+      redirect: false, 
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      router.push("/dashboard/admin");
+    await getSession();
+    router.refresh()
+      
+      router.push("/createcycles");
     }
   };
 
@@ -42,7 +41,7 @@ function SigninAdmin() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          <Image src={Logo} alt="A2sv image" width={192} height={48} />
+          <img src={path.src} alt="A2sv image" className="h-16" />
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
@@ -87,7 +86,7 @@ function SigninAdmin() {
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white cursor-pointer flex items-center justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
           >
             <FaLock />
             <span>Sign in</span>
