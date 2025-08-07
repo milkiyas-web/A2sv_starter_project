@@ -28,7 +28,6 @@ export default function CreateUserPage() {
             [field]: value
         }));
 
-        // Clear error when user starts typing
         if (errors[field as keyof typeof errors]) {
             setErrors(prev => ({
                 ...prev,
@@ -72,13 +71,11 @@ export default function CreateUserPage() {
     const handleSaveUser = () => {
         if (validateForm()) {
             console.log('User data:', formData);
-            // Here you would typically make an API call to save the user
             alert('User created successfully!');
         }
     };
 
     const handleCancel = () => {
-        // Reset form or navigate back
         setFormData({
             fullName: '',
             email: '',
@@ -128,7 +125,6 @@ export default function CreateUserPage() {
                                 )}
                             </div>
 
-                            {/* Email Address */}
                             <div className="space-y-2">
                                 <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                                     Email address
@@ -146,7 +142,6 @@ export default function CreateUserPage() {
                                 )}
                             </div>
 
-                            {/* Password */}
                             <div className="space-y-2">
                                 <Label htmlFor="password" className="text-sm font-medium text-gray-700">
                                     Password
@@ -164,7 +159,6 @@ export default function CreateUserPage() {
                                 )}
                             </div>
 
-                            {/* Role */}
                             <div className="space-y-2">
                                 <Label htmlFor="role" className="text-sm font-medium text-gray-700">
                                     Role
@@ -187,7 +181,6 @@ export default function CreateUserPage() {
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
                         <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
                             <Button
                                 type="button"
