@@ -16,7 +16,7 @@ export default function CycleForm() {
     if (session.status === 'unauthenticated') {
       window.location.href = '/auth/sign_in_admin'
     }
-  }, [])
+  }, [session.status])
 
   const onSubmit = async (data: ncycle) => {
     console.log('Form submitted:', data)

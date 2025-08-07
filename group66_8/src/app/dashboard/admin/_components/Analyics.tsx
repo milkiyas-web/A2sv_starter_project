@@ -2,11 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Applications, HorizontalBar } from '@/types/globaltype';
-<<<<<<< HEAD
 import HorizontalBarchart from './HorizontalBarChart'
-=======
-import HorizontalBarchart from './HorizontalBarchart';
->>>>>>> cf6667c21cae22b9de4e6fbb358ab388dc632056
 import UniversityPieChart from './Piechart';
 import VerticalBarGraph from './VerticalBarGraph';
 
@@ -23,7 +19,7 @@ function Analytics() {
   const [data, setData] = useState<Applications | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [barData, setBarData] = useState<HorizontalBar>({ in_progress: 0, accepted: 0, interview: 0, applied: 0 });
-
+console.log(barData)
   useEffect(() => {
     const fetcher = async () => {
       if (status !== 'authenticated' || !session?.accessToken) {
@@ -51,9 +47,9 @@ function Analytics() {
         console.log('API Response:', fetchedData);
         setData(fetchedData);
         setError(null);
-      } catch (err: any) {
-        console.error('Fetch error:', err);
-        setError(err.message || 'An error occurred while fetching applications');
+      } catch (err) {
+        console.error('Fetch error:');
+        setError('An error occurred while fetching applications');
       }
     };
 

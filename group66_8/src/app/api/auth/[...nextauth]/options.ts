@@ -1,3 +1,5 @@
+//eslint-disable-next-line import/no-unresolved
+
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -45,7 +47,7 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
   }
 };
 
-export const Options: NextAuthOptions = {
+export const Options:NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",

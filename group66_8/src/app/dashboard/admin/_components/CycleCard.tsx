@@ -3,13 +3,11 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Cycle } from '@/types/globaltype';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 interface Props {
   cycle: Cycle;
 }
 
 export function CycleCard({ cycle }: Props) {
-  const router=useRouter()
   const session=useSession()
   const getRandomHexColor = () => {
   const r = Math.floor(Math.random() * 100);   
