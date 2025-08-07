@@ -1,9 +1,9 @@
 import React from 'react'
-import Cycl from '@/components/Cycle'
+import Cycl from '../_components/Cycle'
 function AdminCycles() {
   return (
     <div>
-      <Cycl/>
+      <Cycl />
     </div>
   )
 }
