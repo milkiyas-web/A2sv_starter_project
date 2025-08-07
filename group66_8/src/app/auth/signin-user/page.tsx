@@ -40,7 +40,6 @@ function SigninUser() {
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
           <Image src={Logo} alt="A2sv image" width={192} height={48} />
-
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
@@ -50,9 +49,7 @@ function SigninUser() {
           <span className="cursor-pointer">Create a new applicant account</span>
         </div>
         {error && (
-          <div className="text-red-500 text-sm text-center mb-4">
-            {error}
-          </div>
+          <div className="text-red-500 text-sm text-center mb-4">{error}</div>
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">

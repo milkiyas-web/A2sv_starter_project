@@ -34,7 +34,6 @@ function SigninAdmin() {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      // Use router.push instead of window.location.href
       router.push("/dashboard/admin");
     }
   };
