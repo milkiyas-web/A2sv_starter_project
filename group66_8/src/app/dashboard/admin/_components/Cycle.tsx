@@ -43,17 +43,17 @@ function Cycl() {
         <Button className="mt-2 sm:mt-0" onClick={() => { router.push('/dashboard/admin/admincycles/createcycles') }}>Create Cycle</Button>
       </div>
 
-  
-  <div className="flex justify-center">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
-      {data?.data.cycles.map((dat, index) => (
-        <Link href={`/dashboard/admin/admincycles/managecycles/${dat.id}`}>
-        <CycleCard key={index} cycle={dat} />
-        </Link>
-      ))}
+
+      <div className="flex justify-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
+          {data?.data.cycles.map((dat, index) => (
+            <Link href={`/dashboard/admin/admincycles/managecycles/${dat.id}`}>
+              <CycleCard key={index} cycle={dat} />
+            </Link>
+          ))}
+        </div>
+      </div>
     </div>
-  </div>
-</div>
   )
 }
 

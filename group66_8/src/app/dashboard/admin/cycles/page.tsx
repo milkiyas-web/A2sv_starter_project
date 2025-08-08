@@ -3,7 +3,7 @@ import Cycl from '../_components/Cycle'
 function AdminCycles() {
   return (
     <div>
-      <Cycl/>
+      <Cycl />
     </div>
   )
 }

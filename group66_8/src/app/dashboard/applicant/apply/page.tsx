@@ -5,9 +5,7 @@ import { Button } from "@/components/ui/button";
 
 import {
   Card,
-  CardAction,
-  CardDescription,
-  CardFooter,
+
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,10 +13,15 @@ import { Progress } from "@/components/ui/progress";
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { completeChecklistItem, goToNextFormStep, setApplicationProgress, setFormStepStatus } from "@/lib/redux/slice/applicationSlice";
 
 const page = () => {
   const { data: session } = useSession();
   const token = session?.accessToken;
+  console.log(token);
+  const dispatch = useDispatch()
+  const router = useRouter()
   const router = useRouter();
 
   console.log(token, "valid token");
@@ -43,9 +46,15 @@ const page = () => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
+  const userName = "John";
+  const percentComplete = 75; // Example percentage
+  // Field-level validation for onBlur
+
   const handleSubmit = async () => {
     const isValid = validateStep(step);
     if (!isValid) return;
+    dispatch(setFormStepStatus({ step: "essay", status: "completed" }));
+    dispatch(setApplicationProgress({ submitted: "completed" }));
 
     const data = new FormData();
 
@@ -63,6 +72,7 @@ const page = () => {
     if (formData.resume) {
       data.append("resume", formData.resume);
     }
+
 
     try {
       const res = await fetch(
@@ -87,7 +97,7 @@ const page = () => {
       }
 
       if (!res.ok) throw new Error("Submission failed");
-
+      router.push("/dashboard/applicant")
       console.log("✅ Form submitted successfully");
       router.push("/dashboard/applicant/in-progress");
     } catch (err) {
@@ -143,6 +153,7 @@ const page = () => {
   const handleNext = () => {
     // Validate the NEXT step (step+1) requirements before moving forward
     if (validateStep(step + 1)) {
+      dispatch(goToNextFormStep())
       setStep(step + 1);
     }
   };
@@ -207,9 +218,8 @@ const page = () => {
                     onBlur={(e) => validateField("idNumber", e.target.value)}
                     type="text"
                     placeholder="ID Number"
-                    className={`border p-2 rounded ${
-                      errors.idNumber ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.idNumber ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.idNumber && (
                     <p className="text-xs text-red-500 mt-1">
@@ -225,9 +235,8 @@ const page = () => {
                     onBlur={(e) => validateField("school", e.target.value)}
                     type="text"
                     placeholder="School / University"
-                    className={`border p-2 rounded ${
-                      errors.school ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.school ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.school && (
                     <p className="text-xs text-red-500 mt-1">{errors.school}</p>
@@ -242,9 +251,8 @@ const page = () => {
                       onBlur={(e) => validateField("degree", e.target.value)}
                       type="text"
                       placeholder="Degree Program"
-                      className={`border p-2 rounded ${
-                        errors.degree ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`border p-2 rounded ${errors.degree ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
                     {errors.degree && (
                       <p className="text-xs text-red-500 mt-1">
@@ -260,9 +268,8 @@ const page = () => {
                       onBlur={(e) => validateField("country", e.target.value)}
                       type="text"
                       placeholder="Country"
-                      className={`border p-2 rounded ${
-                        errors.country ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`border p-2 rounded ${errors.country ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
                     {errors.country && (
                       <p className="text-xs text-red-500 mt-1">
@@ -347,9 +354,8 @@ const page = () => {
                     onBlur={(e) => validateField("codeforces", e.target.value)}
                     type="text"
                     placeholder="Codeforces"
-                    className={`border p-2 rounded ${
-                      errors.codeforces ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.codeforces ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.codeforces && (
                     <p className="text-xs text-red-500 mt-1">
@@ -365,9 +371,8 @@ const page = () => {
                     onBlur={(e) => validateField("leetcode", e.target.value)}
                     type="text"
                     placeholder="LeetCode"
-                    className={`border p-2 rounded ${
-                      errors.leetcode ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.leetcode ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.leetcode && (
                     <p className="text-xs text-red-500 mt-1">
@@ -383,9 +388,8 @@ const page = () => {
                     onBlur={(e) => validateField("github", e.target.value)}
                     type="text"
                     placeholder="Github"
-                    className={`border p-2 rounded ${
-                      errors.github ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.github ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.github && (
                     <p className="text-xs text-red-500 mt-1">{errors.github}</p>
@@ -472,9 +476,8 @@ const page = () => {
                     id="about"
                     name="about"
                     rows={4}
-                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                      errors.about ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.about ? "border-red-500" : "border-gray-300"
+                      }`}
                     placeholder="Write something about yourself..."
                   />
                   {errors.about && (
@@ -498,9 +501,8 @@ const page = () => {
                     id="whyJoin"
                     name="whyJoin"
                     rows={4}
-                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                      errors.whyJoin ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.whyJoin ? "border-red-500" : "border-gray-300"
+                      }`}
                     placeholder="Explain your motivation..."
                   />
                   {errors.whyJoin && (
@@ -520,10 +522,14 @@ const page = () => {
                   </label>
                   <input
                     onChange={(e) => {
+                      const file = e.target?.[0] || null
                       setFormData({
                         ...formData,
-                        resume: e.target.files?.[0] || null,
+                        resume: file
                       });
+                      if (file) {
+                        dispatch(completeChecklistItem("resume"))
+                      }
                     }}
                     onBlur={(e) =>
                       validateField("resume", e.target.files?.[0] || null)
@@ -532,9 +538,8 @@ const page = () => {
                     accept=".pdf,.doc,.docx"
                     id="resume"
                     name="resume"
-                    className={`file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 ${
-                      errors.resume ? "border-red-500" : ""
-                    }`}
+                    className={`file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 ${errors.resume ? "border-red-500" : ""
+                      }`}
                   />
                   {errors.resume && (
                     <p className="text-xs text-red-500 mt-1">{errors.resume}</p>

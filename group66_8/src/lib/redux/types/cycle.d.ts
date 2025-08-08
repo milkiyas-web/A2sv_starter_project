@@ -2,15 +2,16 @@ export interface Cycle {
   id: number;
   name: string;
   start_date: string;
+  end_date: string;
   created_at: string;
-  is_active: string;
+  is_active: boolean;
 }
 export interface CreateCyclePayload {
   name: string;
   start_date: string;
   end_date: string;
 }
-interface GetCyclesResponse {
+export interface GetCyclesResponse {
   success: boolean;
   data: {
     cycles: Cycle[];

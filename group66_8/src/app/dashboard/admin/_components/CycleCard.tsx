@@ -11,6 +11,13 @@ interface Props {
 }
 
 export function CycleCard({ cycle }: Props) {
+
+
+  // const session = useSession() as {
+  //   data: NextAuthSession | null;
+  //   status: 'authenticated' | 'loading' | 'unauthenticated';
+  // };
+
   // const router = useRouter();
   // const session = useSession();
   // const { toast } = useToast(); 
@@ -26,7 +33,7 @@ export function CycleCard({ cycle }: Props) {
     e.preventDefault();
     e.stopPropagation();
 
-    
+
     window.location.reload();
   };
 
