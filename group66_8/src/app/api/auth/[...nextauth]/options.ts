@@ -88,7 +88,6 @@ export const Options = {
           );
 
           const hold = await res.json();
-          console.log("🔐 Authorize Response:", hold);
 
           if (!res.ok || !hold.data?.access) {
             throw new Error(hold.message || "Authentication failed");
@@ -108,7 +107,6 @@ export const Options = {
 
           return user;
         } catch (error) {
-          console.error("🔴 Authorize error:", error);
           throw new Error("Login failed");
         }
       },

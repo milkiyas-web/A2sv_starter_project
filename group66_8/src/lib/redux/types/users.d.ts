@@ -24,7 +24,7 @@ export interface DeleteUserPayload {
 export interface GetusersResponse {
   success: boolean;
   data: {
-    items: User[];
+    users: User[];
     count: number;
     total_count: number;
     page: number;

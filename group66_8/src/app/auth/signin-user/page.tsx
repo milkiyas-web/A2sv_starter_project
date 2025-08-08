@@ -8,14 +8,15 @@ import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import { Logo } from "@/lib";
 import Image from "next/image";
-import type { Session as NextAuthSession } from "next-auth";
+import { useRouter } from "next/navigation";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
+  const router = useRouter();
   const { errors } = formState;
+
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const onSubmit = async (data: User) => {
     setError(null);
     const res = await signIn("credentials", {
@@ -31,15 +32,13 @@ function SigninUser() {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      const session = (await getSession()) as NextAuthSession | null;
-      if (session?.role === 'applicant') {
-
-      }
-      else if (session?.role === 'manager') {
-
-      }
-      else if (session?.role === 'reviewer') {
-
+      const session = await getSession();
+      if (session?.role === "applicant") {
+        router.push("/dashboard/applicant");
+      } else if (session?.role === "manager") {
+        router.push("/dashboard/manager");
+      } else if (session?.role === "reviewer") {
+        router.push("/dashboard/reviewer");
       }
     }
   };
@@ -58,9 +57,7 @@ function SigninUser() {
           <span className="cursor-pointer">Create a new applicant account</span>
         </div>
         {error && (
-          <div className="text-red-500 text-sm text-center mb-4">
-            {error}
-          </div>
+          <div className="text-red-500 text-sm text-center mb-4">{error}</div>
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">

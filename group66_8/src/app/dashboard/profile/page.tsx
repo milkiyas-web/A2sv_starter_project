@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
-import type { Session as NextAuthSession } from 'next-auth';
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import background from "../../../../public/file.svg";
-import profile from "../../../../public/file.svg";
+import { useRouter } from "next/navigation";
+import background from "../../../../public/background.svg";
+import profile from "../../../../public/profile.svg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -32,11 +32,8 @@ type ProfileForm = {
 };
 
 function UserProfile() {
-  //await getSession();
-  const { data: session, status } = useSession() as {
-    data: NextAuthSession | null;
-    status: 'authenticated' | 'loading' | 'unauthenticated';
-  };
+  const router = useRouter();
+  const { data: session, status, update } = useSession();
   const [data, setData] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -57,6 +54,9 @@ function UserProfile() {
   } = useForm<ProfileForm>();
 
   useEffect(() => {
+    if (status === "unauthenticated") {
+      window.location.href = '/auth/sign_in_admin'
+    }
 
     const fetchProfile = async () => {
       if (status !== "authenticated" || !session?.accessToken) {
@@ -70,7 +70,7 @@ function UserProfile() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${session.accessToken}`,
+            Authorization: `Bearer ${session?.accessToken}`,
           },
         });
 
@@ -92,7 +92,7 @@ function UserProfile() {
     };
 
     fetchProfile();
-  }, [status, session?.accessToken, resetProfile]);
+  }, [status, session?.accessToken, resetProfile, router]);
 
   const onPasswordSubmit = async (formData: PasswordForm) => {
     setFormError(null);
@@ -200,7 +200,9 @@ function UserProfile() {
             />
             <div className="pb-2">
               <h1 className="text-xl sm:text-2xl font-bold">{data?.data?.full_name || "Unknown"}</h1>
-              <p className="text-sm sm:text-base text-gray-600">{data?.data?.email || "No email"}</p>
+              <p className="text-sm sm:text-base
+
+ text-gray-600">{data?.data?.email || "No email"}</p>
             </div>
           </div>
         </div>
