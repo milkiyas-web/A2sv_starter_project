@@ -2,16 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Applications, HorizontalBar } from '@/types/globaltype';
-<<<<<<< HEAD
 import HorizontalBarchart from './HorizontalBarChart'
-=======
-import HorizontalBarchart from './HorizontalBarchart';
->>>>>>> cf6667c21cae22b9de4e6fbb358ab388dc632056
 import UniversityPieChart from './Piechart';
 import VerticalBarGraph from './VerticalBarGraph';
 
 function Analytics() {
-  
+
   const dummyData = {
     applied: 150,
     in_progress: 80,
@@ -103,28 +99,28 @@ function Analytics() {
     return <div className='text-center'>Loading applications...</div>;
   }
 
-  return(
-    
-  <div className="p-4 flex flex-col">
-    <div >
-    <h1 className=' font-bold text-[30px]'>Application Analytics</h1>
-    <p>Insights </p>
-    </div>
-    <div className='flex flex-wrap gap-2 pb-4'>
-      <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-10'>
-        <p>Total Applicants</p>
-        <p>{data.data.total_count}</p>
-      </div>
-      <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-1g'>
-        <p>Acceptance Rate</p>
-        <p>10%</p>
+  return (
 
+    <div className="p-4 flex flex-col">
+      <div >
+        <h1 className=' font-bold text-[30px]'>Application Analytics</h1>
+        <p>Insights </p>
       </div>
-      <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-1g'>
-        <p>Average review Time</p>
-        <p>2 days</p>
+      <div className='flex flex-wrap gap-2 pb-4'>
+        <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-10'>
+          <p>Total Applicants</p>
+          <p>{data.data.total_count}</p>
+        </div>
+        <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-1g'>
+          <p>Acceptance Rate</p>
+          <p>10%</p>
+
+        </div>
+        <div className='bg-gray-200 p-4 w-1/4 shadow-lg rounded-1g'>
+          <p>Average review Time</p>
+          <p>2 days</p>
+        </div>
       </div>
-    </div>
       <div className="flex flex-col gap-4">
         <div className="flex flex-col md:flex-row md:gap-4">
           <div className="w-full md:w-1/2 shadow-lg rounded-lg bg-white p-4">
