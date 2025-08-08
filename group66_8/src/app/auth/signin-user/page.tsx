@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import { Logo } from "@/lib";
 import Image from "next/image";
-import type { Session as NextAuthSession } from "next-auth";
 import { useRouter } from "next/navigation";
 
 function SigninUser() {
@@ -18,7 +17,6 @@ function SigninUser() {
 
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const onSubmit = async (data: User) => {
     setError(null);
     const res = await signIn("credentials", {
