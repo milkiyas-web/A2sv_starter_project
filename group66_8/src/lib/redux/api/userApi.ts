@@ -6,7 +6,7 @@ import {
   UpdateUserPayload,
   User,
 } from "../types/users";
-import { baseApi, internalApi } from "./baseApi";
+import { internalApi } from "./baseApi";
 
 export const userApi = internalApi.injectEndpoints({
   endpoints: (build) => ({

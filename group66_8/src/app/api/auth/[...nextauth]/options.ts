@@ -1,16 +1,17 @@
-import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-interface ExtendedToken {
+import { JWT } from "next-auth/jwt";
+import type { User } from "next-auth";
+import type { Session } from "next-auth";
+interface ExtendedToken extends JWT {
   accessToken: string;
   refreshToken: string;
   accessTokenExpires: number;
   role: string;
-  rememberMe: boolean;
+  rememberme: boolean;
   error?: string;
 }
 
-interface ExtendedUser {
+interface ExtendedUser extends User {
   email: string;
   accessToken: string;
   refreshToken: string;
@@ -20,11 +21,14 @@ interface ExtendedUser {
 
 const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
   try {
-    const res = await fetch("https://a2sv-application-platform-backend-team8.onrender.com/auth/token/refresh", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ refreshToken: token.refreshToken }),
-    });
+    const res = await fetch(
+      "https://a2sv-application-platform-backend-team8.onrender.com/auth/token/refresh",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refreshToken: token.refreshToken }),
+      }
+    );
 
     const hold = await res.json();
     console.log("🔁 Refresh Token Response:", hold);
@@ -36,8 +40,10 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
     return {
       ...token,
       accessToken: hold.data.access,
-      accessTokenExpires: Date.now() + 15 * 60 * 1000, // Always 15 minutes
-      error: undefined,
+      accessTokenExpires:
+        Date.now() +
+        (token.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000),
+      error: "RefreshAccessTokenError",
     };
   } catch (error) {
     console.error("🔴 Error refreshing access token:", error);
@@ -45,11 +51,11 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
   }
 };
 
-export const Options: NextAuthOptions = {
+export const Options = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
-    strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60, // 7 days max session (for rememberMe)
+    strategy: "jwt" as const,
+    maxAge: 7 * 24 * 60 * 60,
   },
 
   providers: [
@@ -61,8 +67,10 @@ export const Options: NextAuthOptions = {
         rememberme: { label: "Remember Me", type: "checkbox" },
       },
       async authorize(credentials) {
-        const userlink = "https://a2sv-application-platform-backend-team8.onrender.com/auth/token";
-        const adminlink = "https://a2sv-application-platform-backend-team8.onrender.com/admin/login";
+        const userlink =
+          "https://a2sv-application-platform-backend-team8.onrender.com/auth/token";
+        const adminlink =
+          "https://a2sv-application-platform-backend-team8.onrender.com/admin/login";
 
         const body = {
           email: credentials?.email,
@@ -86,10 +94,14 @@ export const Options: NextAuthOptions = {
           }
 
           const user: ExtendedUser = {
+            id: credentials?.email || "unknown",
             email: credentials?.email || "",
             accessToken: hold.data.access,
             refreshToken: hold.data.refresh || "",
-            role: credentials?.role?.toLowerCase() === "admin" ? "admin" : hold.data.role,
+            role:
+              credentials?.role?.toLowerCase() === "admin"
+                ? "admin"
+                : hold.data.role,
             rememberme: credentials?.rememberme === "true",
           };
 
@@ -102,46 +114,34 @@ export const Options: NextAuthOptions = {
   ],
 
   callbacks: {
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      if (url.startsWith(baseUrl)) return url;
-      return baseUrl;
-    },
-
-    async jwt({ token, user }) {
-      // Initial sign-in
+    async jwt(params: any) {
+      const { token, user } = params as { token: JWT; user?: User };
       if (user) {
         const u = user as ExtendedUser;
-        token.accessToken = u.accessToken;
-        token.refreshToken = u.refreshToken;
-        token.role = u.role;
-        token.rememberMe = u.rememberme;
-        token.accessTokenExpires = Date.now() + 15 * 60 * 1000; // Always 15 minutes
+        (token as any).accessToken = u.accessToken;
+        (token as any).refreshToken = u.refreshToken;
+        (token as any).role = u.role;
+        (token as any).rememberme = u.rememberme;
+        (token as any).accessTokenExpires =
+          Date.now() +
+          (u.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000);
         return token;
       }
 
-      const isExpired = Date.now() >= (token.accessTokenExpires ?? 0) - 60 * 1000;
-
-      if (isExpired) {
-        if (token.rememberMe) {
-          return await refreshToken(token as ExtendedToken);
-        } else {
-          return {
-            ...token,
-            error: "SessionExpired",
-          };
-        }
+      if (
+        (token as any).accessTokenExpires &&
+        Date.now() >= (token as any).accessTokenExpires - 60 * 1000
+      ) {
+        return await refreshToken(token as ExtendedToken);
       }
-
       return token;
     },
-
-    async session({ session, token }) {
+    async session({ session, token, ..._rest }: any) {
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.role = token.role;
       session.accessTokenExpires = token.accessTokenExpires;
-      session.error = token.error;
+      session.authError = (token as ExtendedToken).error; // use authError instead of error
       return session;
     },
   },

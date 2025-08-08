@@ -2,18 +2,18 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Cycle } from '@/types/globaltype';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/components/ui/use-toast'; 
+// import { useSession } from 'next-auth/react';
+// import { useRouter } from 'next/navigation';
+// import { useToast } from '@/components/ui/use-toast'; 
 
 interface Props {
   cycle: Cycle;
 }
 
 export function CycleCard({ cycle }: Props) {
-  const router = useRouter();
-  const session = useSession();
-  const { toast } = useToast(); 
+  // const router = useRouter();
+  // const session = useSession();
+  // const { toast } = useToast(); 
 
   const getRandomHexColor = () => {
     const r = Math.floor(Math.random() * 100);
@@ -50,9 +50,8 @@ export function CycleCard({ cycle }: Props) {
         <div>
           <span className="block text-sm font-medium text-gray-600">Status</span>
           <span
-            className={`block text-base font-semibold ${
-              cycle.is_active ? 'text-green-600' : 'text-gray-500'
-            }`}
+            className={`block text-base font-semibold ${cycle.is_active ? 'text-green-600' : 'text-gray-500'
+              }`}
           >
             {cycle.is_active ? 'Active' : 'Closed'}
           </span>
