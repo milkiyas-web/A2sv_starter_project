@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Cycles } from '@/types/globaltype'
 import { CycleCard } from './CycleCard';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 function Cycl() {
   const { data: session, status } = useSession()
   const [data, setData] = useState<Cycles>();
@@ -35,7 +35,7 @@ function Cycl() {
 
       <div className="flex flex-col sm:flex-row justify-between items-center py-4">
         <h2 className="text-lg font-semibold text-center sm:text-left">Application Cycles</h2>
-        <Button className="mt-2 sm:mt-0" onClick={() => { router.push('/dashboard/admin/cycles/createcycles') }}>Create Cycle</Button>
+        <Button className="mt-2 sm:mt-0" onClick={() => { router.push('/dashboard/admin/admincycles/createcycles') }}>Create Cycle</Button>
       </div>
 
 

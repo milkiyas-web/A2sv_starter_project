@@ -16,7 +16,7 @@ const bigCardData = [
         title: "Manage Cycles",
         description: "Create and manage application cycles.",
         footer: "Go to Cycles",
-        link: "/cycles"
+        link: "/admincycles"
     },
     {
         title: "Recent Admin Activity",
