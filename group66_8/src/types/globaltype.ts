@@ -1,3 +1,33 @@
+interface ApplicationFunnel {
+  submitted: number;
+  accepted: number;
+  pending_review: number;
+  in_progress: number;
+}
+
+interface SchoolDistribution {
+  [schoolName: string]: number; 
+}
+
+interface CountryDistribution {
+  [countryName: string]: number;
+}
+
+interface AnalyticsData {
+  total_applicants: number;
+  acceptance_rate: number;
+  average_review_time_days: number;
+  application_funnel: ApplicationFunnel;
+  school_distribution: SchoolDistribution;
+  country_distribution: CountryDistribution;
+}
+
+interface ApiResponse {
+  success: boolean;
+  data: AnalyticsData;
+  message: string;
+}
+
 export type User={
     full_name:string,
     email:string,

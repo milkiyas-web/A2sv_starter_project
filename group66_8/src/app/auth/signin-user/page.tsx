@@ -6,23 +6,27 @@ import { getSession, signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
-// import path from "../../../../public/images/logo-blue.svg fill.svg";
+import { Logo } from "@/lib";
+import Image from "next/image";
+import type { Session as NextAuthSession } from "next-auth";
+import { useRouter } from "next/navigation";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
+  const router=useRouter()
   const { errors } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: User) => {
-    setError(null); 
+    setError(null);
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
       role: "user",
       rememberme: rememberMe,
       redirect: false,
-      callbackUrl: "/Dashboard",
+      callbackUrl: "/",
     });
 
     if (res?.error) {
@@ -31,13 +35,13 @@ function SigninUser() {
     } else {
       const session = await getSession();
       if(session?.role==='applicant'){
-
+        router.push('/dashboard/applicant')
       }
       else if(session?.role==='manager'){
-          
+       router.push('/dashboard/manager')   
       }
       else if(session?.role==='reviewer'){
-
+        router.push('/dashboard/reviewer')
       }
     }
   };
@@ -46,7 +50,7 @@ function SigninUser() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          {/* <img src={path.src} alt="A2sv image" className="h-16" /> */}
+          <Image src={Logo} alt="A2sv image" className="h-16" />
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
