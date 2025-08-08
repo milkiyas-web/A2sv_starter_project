@@ -1,7 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-
 interface ExtendedToken {
   accessToken: string;
   refreshToken: string;
@@ -18,6 +17,7 @@ interface ExtendedUser {
   role: string;
   rememberme: boolean;
 }
+
 const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
   try {
     const res = await fetch("https://a2sv-application-platform-backend-team8.onrender.com/auth/token/refresh", {
@@ -36,8 +36,8 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
     return {
       ...token,
       accessToken: hold.data.access,
-      accessTokenExpires: Date.now() + (token.rememberMe ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000),
-      error: null,
+      accessTokenExpires: Date.now() + 15 * 60 * 1000, // Always 15 minutes
+      error: undefined,
     };
   } catch (error) {
     console.error("🔴 Error refreshing access token:", error);
@@ -49,7 +49,7 @@ export const Options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 7 * 24 * 60 * 60, 
+    maxAge: 7 * 24 * 60 * 60, // 7 days max session (for rememberMe)
   },
 
   providers: [
@@ -80,7 +80,6 @@ export const Options: NextAuthOptions = {
           );
 
           const hold = await res.json();
-          console.log("🔐 Authorize Response:", hold);
 
           if (!res.ok || !hold.data?.access) {
             throw new Error(hold.message || "Authentication failed");
@@ -96,7 +95,6 @@ export const Options: NextAuthOptions = {
 
           return user;
         } catch (error) {
-          console.error("🔴 Authorize error:", error);
           throw new Error("Login failed");
         }
       },
@@ -109,23 +107,30 @@ export const Options: NextAuthOptions = {
       if (url.startsWith(baseUrl)) return url;
       return baseUrl;
     },
+
     async jwt({ token, user }) {
-    
+      // Initial sign-in
       if (user) {
         const u = user as ExtendedUser;
         token.accessToken = u.accessToken;
         token.refreshToken = u.refreshToken;
         token.role = u.role;
         token.rememberMe = u.rememberme;
-        token.accessTokenExpires = Date.now() + (u.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000);
+        token.accessTokenExpires = Date.now() + 15 * 60 * 1000; // Always 15 minutes
         return token;
       }
 
-      if (
-        token.accessTokenExpires &&
-        Date.now() >= token.accessTokenExpires - 60 * 1000
-      ) {
-        return await refreshToken(token as ExtendedToken);
+      const isExpired = Date.now() >= (token.accessTokenExpires ?? 0) - 60 * 1000;
+
+      if (isExpired) {
+        if (token.rememberMe) {
+          return await refreshToken(token as ExtendedToken);
+        } else {
+          return {
+            ...token,
+            error: "SessionExpired",
+          };
+        }
       }
 
       return token;
