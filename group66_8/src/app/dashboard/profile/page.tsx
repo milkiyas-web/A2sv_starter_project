@@ -1,10 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import type { Session as NextAuthSession } from 'next-auth';
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import background from "../../../public/images/background.svg";
-import profile from "../../../public/images/profile.svg";
+import background from "../../../../public/file.svg";
+import profile from "../../../../public/file.svg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -32,7 +33,10 @@ type ProfileForm = {
 
 function UserProfile() {
   //await getSession();
-  const { data: session, status,update } = useSession();
+  const { data: session, status } = useSession() as {
+    data: NextAuthSession | null;
+    status: 'authenticated' | 'loading' | 'unauthenticated';
+  };
   const [data, setData] = useState<User | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
@@ -53,10 +57,7 @@ function UserProfile() {
   } = useForm<ProfileForm>();
 
   useEffect(() => {
-    const refresh=async()=>{
-      await update();
-    };
-    refresh();
+
     const fetchProfile = async () => {
       if (status !== "authenticated" || !session?.accessToken) {
         setError("You must be logged in to view your profile.");
@@ -84,9 +85,9 @@ function UserProfile() {
           full_name: profileData.data.full_name,
           email: profileData.data.email,
         });
-      } catch (err: any) {
-        setError(err.message || "An error occurred while fetching your profile");
-        console.error("Fetch error:", err);
+      } catch (e: any) {
+        setError("An error occurred while fetching your profile");
+        console.error(e, "Fetch error:");
       }
     };
 
@@ -123,10 +124,14 @@ function UserProfile() {
 
       resetPassword();
       alert("Password changed successfully!");
-    } catch (err: any) {
-      setFormError(err.message || "An error occurred while changing your password");
-      console.error("Password change error:", err);
+    } catch (err) {
+      if (err instanceof Error) {
+        setFormError(err.message);
+      } else {
+        setFormError("An error occurred while changing your password");
+      }
     }
+
   };
 
   const onProfileSubmit = async (formData: ProfileForm) => {
@@ -154,9 +159,9 @@ function UserProfile() {
       const updatedProfile: User = await res.json();
       setData(updatedProfile);
       alert("Profile updated successfully!");
-    } catch (err: any) {
-      setProfileFormError(err.message || "An error occurred while updating your profile");
-      console.error("Profile update error:", err);
+    } catch (e) {
+      setProfileFormError("An error occurred while updating your profile");
+      console.error("Profile update error:", e);
     } finally {
       setIsProfileLoading(false);
     }

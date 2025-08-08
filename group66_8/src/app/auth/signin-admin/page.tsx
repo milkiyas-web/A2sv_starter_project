@@ -7,14 +7,15 @@ import { useRouter } from "next/navigation"; // Import useRouter
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
-import path from "../../../../public/images/logo-blue.svg fill.svg";
+import Image from "next/image";
+import { Logo } from "@/lib";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
   const { errors } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
 
   const onSubmit = async (data: User) => {
     setError(null);
@@ -23,17 +24,17 @@ function SigninAdmin() {
       password: data.password,
       role: "Admin",
       rememberme: rememberMe,
-      redirect: false, 
+      redirect: false,
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-    await getSession();
-    router.refresh()
-      
-      router.push("/createcycles");
+      await getSession();
+      router.refresh()
+
+      router.push("/dashboard/admin");
     }
   };
 
@@ -41,7 +42,7 @@ function SigninAdmin() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          <img src={path.src} alt="A2sv image" className="h-16" />
+          <Image src={Logo} alt="A2sv image" className="h-16" />
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account

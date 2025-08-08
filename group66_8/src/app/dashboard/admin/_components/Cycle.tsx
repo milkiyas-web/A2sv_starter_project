@@ -3,10 +3,22 @@ import React, { useEffect, useState } from 'react'
 import { Cycles } from '@/types/globaltype'
 import { CycleCard } from './CycleCard';
 import { useSession } from 'next-auth/react';
+<<<<<<< HEAD
+=======
+import type { Session as NextAuthSession } from 'next-auth';
+import { Button } from '@/components/ui/button';
+>>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 function Cycl() {
+<<<<<<< HEAD
   const { data: session, status } = useSession()
+=======
+  const { data: session, status } = useSession() as {
+    data: NextAuthSession | null;
+    status: 'authenticated' | 'loading' | 'unauthenticated';
+  };
+>>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
   const [data, setData] = useState<Cycles>();
   const router = useRouter()
 
@@ -35,7 +47,11 @@ function Cycl() {
 
       <div className="flex flex-col sm:flex-row justify-between items-center py-4">
         <h2 className="text-lg font-semibold text-center sm:text-left">Application Cycles</h2>
+<<<<<<< HEAD
         <Button className="mt-2 sm:mt-0" onClick={() => { router.push('/dashboard/admin/cycles/createcycles') }}>Create Cycle</Button>
+=======
+        <Button className="mt-2 sm:mt-0" onClick={() => { router.push('/dashboard/admin/admincycles/createcycles') }}>Create Cycle</Button>
+>>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
       </div>
 
 

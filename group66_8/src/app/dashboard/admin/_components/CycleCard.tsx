@@ -1,16 +1,30 @@
 'use client';
 import React from 'react';
+<<<<<<< HEAD
 import { Cycle } from '@/types/globaltype';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+=======
+import { Button } from '@/components/ui/button';
+import { Cycle } from '@/types/globaltype';
+import { useSession } from 'next-auth/react';
+import type { Session as NextAuthSession } from 'next-auth';
+>>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
 interface Props {
   cycle: Cycle;
 }
 
 export function CycleCard({ cycle }: Props) {
+<<<<<<< HEAD
   const router = useRouter()
   const session = useSession()
+=======
+  const session = useSession() as {
+    data: NextAuthSession | null;
+    status: 'authenticated' | 'loading' | 'unauthenticated';
+  };
+>>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
   const getRandomHexColor = () => {
     const r = Math.floor(Math.random() * 100);
     const g = Math.floor(Math.random() * 100);

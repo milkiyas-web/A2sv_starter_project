@@ -6,7 +6,9 @@ import { getSession, signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
-import path from "../../../../public/images/logo-blue.svg fill.svg";
+import { Logo } from "@/lib";
+import Image from "next/image";
+import type { Session as NextAuthSession } from "next-auth";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -15,28 +17,28 @@ function SigninUser() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: User) => {
-    setError(null); 
+    setError(null);
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
       role: "user",
       rememberme: rememberMe,
       redirect: false,
-      callbackUrl: "/Dashboard",
+      callbackUrl: "/",
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-      const session = await getSession();
-      if(session?.role==='applicant'){
+      const session = (await getSession()) as NextAuthSession | null;
+      if (session?.role === 'applicant') {
 
       }
-      else if(session?.role==='manager'){
-          
+      else if (session?.role === 'manager') {
+
       }
-      else if(session?.role==='reviewer'){
+      else if (session?.role === 'reviewer') {
 
       }
     }
@@ -46,7 +48,7 @@ function SigninUser() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          <img src={path.src} alt="A2sv image" className="h-16" />
+          <Image src={Logo} alt="A2sv image" className="h-16" />
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
