@@ -6,16 +6,18 @@ import { getSession, signIn } from "next-auth/react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
-import path from "../../../../public/images/logo-blue.svg fill.svg";
+import { useRouter } from "next/navigation";
+// import path from "../../../../public/images/logo-blue.svg fill.svg";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
   const { errors } = formState;
+
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const router = useRouter();
   const onSubmit = async (data: User) => {
-    setError(null); 
+    setError(null);
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -30,14 +32,13 @@ function SigninUser() {
       console.error("Sign-in error:", res.error);
     } else {
       const session = await getSession();
-      if(session?.role==='applicant'){
-
-      }
-      else if(session?.role==='manager'){
-          
-      }
-      else if(session?.role==='reviewer'){
-
+      console.log("Session data:", session);
+      if (session?.role === "applicant") {
+        router.push("/dashboard/applicant");
+      } else if (session?.role === "manager") {
+        router.push("/dashboard/manager");
+      } else if (session?.role === "reviewer") {
+        router.push("/dashboard/reviewer");
       }
     }
   };
@@ -46,7 +47,7 @@ function SigninUser() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          <img src={path.src} alt="A2sv image" className="h-16" />
+          {/* <img src={path.src} alt="A2sv image" className="h-16" /> */}
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
@@ -56,9 +57,7 @@ function SigninUser() {
           <span className="cursor-pointer">Create a new applicant account</span>
         </div>
         {error && (
-          <div className="text-red-500 text-sm text-center mb-4">
-            {error}
-          </div>
+          <div className="text-red-500 text-sm text-center mb-4">{error}</div>
         )}
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-4">

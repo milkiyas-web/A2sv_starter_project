@@ -1,5 +1,6 @@
 "use client";
-// import useSession
+import { useSession } from "next-auth/react";
+
 import { Button } from "@/components/ui/button";
 
 import {
@@ -15,11 +16,16 @@ import React from "react";
 import { useState } from "react";
 
 const page = () => {
+  const { data: session } = useSession();
+  const token = session?.accessToken;
+  console.log(token);
+
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     idNumber: "",
     school: "",
     degree: "",
+    country: "",
     codeforces: "",
     leetcode: "",
     github: "",
@@ -44,25 +50,34 @@ const page = () => {
     data.append("student_id", formData.idNumber);
     data.append("school", formData.school);
     data.append("degree", formData.degree);
+    data.append("country", formData.country);
     data.append("codeforces_handle", formData.codeforces);
     data.append("leetcode_handle", formData.leetcode);
-    data.append("github_handle", formData.github);
     data.append("essay_about_you", formData.about);
     data.append("essay_why_a2sv", formData.whyJoin);
 
     // Append file field
     if (formData.resume) {
-      data.append("resume", formData.resume); // This MUST be a File object
+      data.append("resume", formData.resume); 
     }
 
+  
     try {
       const res = await fetch(
         "https://a2sv-application-platform-backend-team8.onrender.com/applications/",
         {
           method: "POST",
           body: data,
+          headers: {
+            Authorization: session && session.accessToken ? `Bearer ${session.accessToken}` : "",
+          },
         }
       );
+
+      if (res.status === 409) {
+        alert("You have already submitted an application. Duplicate submissions are not allowed.");
+        return;
+      }
 
       if (!res.ok) throw new Error("Submission failed");
 
@@ -83,7 +98,7 @@ const page = () => {
         "leetcode",
         "github",
         "about",
-        "whyJoin",
+        "whyJoin", 
       ].includes(field)
     ) {
       if (!value || (typeof value === "string" && !value.trim())) {
@@ -210,21 +225,39 @@ const page = () => {
                     <p className="text-xs text-red-500 mt-1">{errors.school}</p>
                   )}
                 </div>
-                <div className="flex flex-col col-span-full">
-                  <input
-                    onChange={(e) => {
-                      setFormData({ ...formData, degree: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("degree", e.target.value)}
-                    type="text"
-                    placeholder="Degree Program"
-                    className={`border p-2 rounded ${
-                      errors.degree ? "border-red-500" : "border-gray-300"
-                    }`}
-                  />
-                  {errors.degree && (
-                    <p className="text-xs text-red-500 mt-1">{errors.degree}</p>
-                  )}
+                <div className="flex flex-col sm:flex-row gap-4 col-span-full">
+                  <div className="flex flex-col flex-1">
+                    <input
+                      onChange={(e) => {
+                        setFormData({ ...formData, degree: e.target.value });
+                      }}
+                      onBlur={(e) => validateField("degree", e.target.value)}
+                      type="text"
+                      placeholder="Degree Program"
+                      className={`border p-2 rounded ${
+                        errors.degree ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.degree && (
+                      <p className="text-xs text-red-500 mt-1">{errors.degree}</p>
+                    )}
+                  </div>
+                  <div className="flex flex-col flex-1">
+                    <input
+                      onChange={(e) => {
+                        setFormData({ ...formData, country: e.target.value });
+                      }}
+                      onBlur={(e) => validateField("country", e.target.value)}
+                      type="text"
+                      placeholder="Country"
+                      className={`border p-2 rounded ${
+                        errors.country ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                    {errors.country && (
+                      <p className="text-xs text-red-500 mt-1">{errors.country}</p>
+                    )}
+                  </div>
                 </div>
               </div>
               {/* Navigation Buttons */}
