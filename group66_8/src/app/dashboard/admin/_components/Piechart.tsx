@@ -14,7 +14,7 @@ function UniversityPieChart({ Applications }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-  const useDummyData = true;
+  const useDummyData = false;
 
   if (useDummyData) {
     const dummyUniversityCount = [

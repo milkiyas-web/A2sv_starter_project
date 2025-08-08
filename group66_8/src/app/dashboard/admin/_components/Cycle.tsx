@@ -5,6 +5,7 @@ import { CycleCard } from './CycleCard';
 import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 function Cycl() {
     const {data:session,status}=useSession()
     const [data,setData]=useState<Cycles>();
@@ -42,7 +43,9 @@ useEffect(()=>{
   <div className="flex justify-center">
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
       {data?.data.cycles.map((dat, index) => (
+        <Link href={`/dashboard/admin/admincycles/managecycles/${dat.id}`}>
         <CycleCard key={index} cycle={dat} />
+        </Link>
       ))}
     </div>
   </div>

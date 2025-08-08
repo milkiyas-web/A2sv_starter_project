@@ -2,11 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { Applications, HorizontalBar } from '@/types/globaltype';
-<<<<<<< HEAD
 import HorizontalBarchart from './HorizontalBarChart'
-=======
-import HorizontalBarchart from './HorizontalBarchart';
->>>>>>> cf6667c21cae22b9de4e6fbb358ab388dc632056
 import UniversityPieChart from './Piechart';
 import VerticalBarGraph from './VerticalBarGraph';
 
