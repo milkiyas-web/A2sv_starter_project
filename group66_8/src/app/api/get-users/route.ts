@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
   const limit = searchParams.get("limit") ?? "10";
 
   const backendRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/admin/users?page=${page}&limit=${limit}`,
+    `$https://a2sv-application-platform-backend-team8.onrender.com/cycles/admin/users?page=${page}&limit=${limit}`,
     {
       headers: {
         Authorization: `Bearer ${session.accessToken}`,
