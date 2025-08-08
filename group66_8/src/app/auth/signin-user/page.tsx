@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import { Logo } from "@/lib";
 import Image from "next/image";
-import type { Session as NextAuthSession } from "next-auth";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 function SigninUser() {
@@ -92,7 +92,9 @@ function SigninUser() {
               <span>Remember me</span>
             </label>
             <span className="text-[#4F46E5] cursor-pointer">
+              <Link href="/auth/forgot-password">
               Forgot your password?
+              </Link>
             </span>
           </div>
           <Button

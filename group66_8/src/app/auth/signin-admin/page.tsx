@@ -81,9 +81,7 @@ function SigninAdmin() {
               />
               <span>Remember me</span>
             </label>
-            <span className="text-[#4F46E5] cursor-pointer">
-              Forgot your password?
-            </span>
+            
           </div>
           <Button
             type="submit"
