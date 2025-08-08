@@ -11,14 +11,13 @@ import {
 import { Progress } from "@/components/ui/progress";
 import React, { useState } from "react";
 import Check from "./icons/Check";
-import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
 import { useRouter } from "next/navigation";
 
 const page = () => {
   const router = useRouter();
 
   const userName = "John";
-  const percentComplete = 75; // Example percentage
+  const percentComplete = 75;
   return (
     <div className="w-[1280px] m-auto">
       <div>
