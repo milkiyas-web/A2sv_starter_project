@@ -22,6 +22,14 @@ const page = () => {
   console.log(token);
   const dispatch = useDispatch()
   const router = useRouter()
+  const router = useRouter();
+
+  console.log(token, "valid token");
+  if (!token) {
+    router.push("/auth/signin-user");
+    console.log("token expire");
+  }
+
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     idNumber: "",
@@ -41,7 +49,6 @@ const page = () => {
   const userName = "John";
   const percentComplete = 75; // Example percentage
   // Field-level validation for onBlur
-
 
   const handleSubmit = async () => {
     const isValid = validateStep(step);
@@ -74,19 +81,25 @@ const page = () => {
           method: "POST",
           body: data,
           headers: {
-            Authorization: session && session.accessToken ? `Bearer ${session.accessToken}` : "",
+            Authorization:
+              session && session.accessToken
+                ? `Bearer ${session.accessToken}`
+                : "",
           },
         }
       );
 
       if (res.status === 409) {
-        alert("You have already submitted an application. Duplicate submissions are not allowed.");
+        alert(
+          "You have already submitted an application. Duplicate submissions are not allowed."
+        );
         return;
       }
 
       if (!res.ok) throw new Error("Submission failed");
       router.push("/dashboard/applicant")
       console.log("✅ Form submitted successfully");
+      router.push("/dashboard/applicant/in-progress");
     } catch (err) {
       console.error("❌ Error submitting form:", err);
     }
@@ -242,7 +255,9 @@ const page = () => {
                         }`}
                     />
                     {errors.degree && (
-                      <p className="text-xs text-red-500 mt-1">{errors.degree}</p>
+                      <p className="text-xs text-red-500 mt-1">
+                        {errors.degree}
+                      </p>
                     )}
                   </div>
                   <div className="flex flex-col flex-1">
@@ -257,23 +272,25 @@ const page = () => {
                         }`}
                     />
                     {errors.country && (
-                      <p className="text-xs text-red-500 mt-1">{errors.country}</p>
+                      <p className="text-xs text-red-500 mt-1">
+                        {errors.country}
+                      </p>
                     )}
                   </div>
                 </div>
               </div>
               {/* Navigation Buttons */}
               <div className="flex justify-between px-4 mt-6">
-                <button
+                {/* <button
                   onClick={handleBack}
-                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
+                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded cursor-pointer hover:bg-gray-300"
                   disabled={step === 0}
                 >
                   Back
-                </button>
+                </button> */}
                 <button
                   onClick={handleNext}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
+                  className="bg-indigo-600 text-white py-2 px-4 rounded cursor-pointer"
                 >
                   Next: Coding Profiles
                 </button>
@@ -383,13 +400,13 @@ const page = () => {
               <div className="flex justify-between px-4 mt-6">
                 <button
                   onClick={handleBack}
-                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
+                  className="bg-gray-200 text-gray-600 py-2 px-4 cursor-pointer rounded hover:bg-gray-300"
                 >
                   Back
                 </button>
                 <button
                   onClick={handleNext}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
+                  className="bg-indigo-600 text-white py-2 px-4 rounded cursor-pointer"
                 >
                   Next: Essay and Resumes
                 </button>
@@ -534,13 +551,13 @@ const page = () => {
               <div className="flex justify-between px-4 mt-6">
                 <button
                   onClick={handleBack}
-                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
+                  className="bg-gray-200 text-gray-600 py-2 px-4 cursor-pointer rounded hover:bg-gray-300"
                 >
                   Back
                 </button>
                 <button
                   onClick={handleSubmit}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
+                  className="bg-indigo-600 text-white py-2 px-4 rounded cursor-pointer"
                 >
                   Submit
                 </button>
