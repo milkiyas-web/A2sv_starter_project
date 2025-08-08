@@ -45,6 +45,15 @@ const applicationSlice = createSlice({
         state.formSteps.currentStep = nextStep;
       }
     },
+    setFormStepStatus(
+      state,
+      action: PayloadAction<{
+        step: "personal" | "coding" | "essay";
+        status: "completed" | "inprogress" | "incomplete";
+      }>
+    ) {
+      state.formSteps[action.payload.step] = action.payload.status;
+    },
     setApplicationProgress(
       state,
       action: PayloadAction<Partial<ApplicationState["applicationProgress"]>>
@@ -61,6 +70,7 @@ export const {
   updateProfileCompletion,
   completeChecklistItem,
   goToNextFormStep,
+  setFormStepStatus,
   setApplicationProgress,
 } = applicationSlice.actions;
 

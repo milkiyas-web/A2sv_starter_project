@@ -1,44 +1,27 @@
 'use client';
 import React from 'react';
-<<<<<<< HEAD
-import { Cycle } from '@/types/globaltype';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-=======
 import { Button } from '@/components/ui/button';
 import { Cycle } from '@/types/globaltype';
-<<<<<<< HEAD
-import { useSession } from 'next-auth/react';
-import type { Session as NextAuthSession } from 'next-auth';
->>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
-=======
 // import { useSession } from 'next-auth/react';
 // import { useRouter } from 'next/navigation';
 // import { useToast } from '@/components/ui/use-toast'; 
 
->>>>>>> f080b14a6db7c566234d1258f024b8c25fe77543
 interface Props {
   cycle: Cycle;
 }
 
 export function CycleCard({ cycle }: Props) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  const router = useRouter()
-  const session = useSession()
-=======
-  const session = useSession() as {
-    data: NextAuthSession | null;
-    status: 'authenticated' | 'loading' | 'unauthenticated';
-  };
->>>>>>> 3a18876ebb120522238627638de432f1bc0c0314
-=======
+
+
+  // const session = useSession() as {
+  //   data: NextAuthSession | null;
+  //   status: 'authenticated' | 'loading' | 'unauthenticated';
+  // };
+
   // const router = useRouter();
   // const session = useSession();
   // const { toast } = useToast(); 
 
->>>>>>> f080b14a6db7c566234d1258f024b8c25fe77543
   const getRandomHexColor = () => {
     const r = Math.floor(Math.random() * 100);
     const g = Math.floor(Math.random() * 100);
@@ -50,7 +33,7 @@ export function CycleCard({ cycle }: Props) {
     e.preventDefault();
     e.stopPropagation();
 
-    
+
     window.location.reload();
   };
 
