@@ -8,7 +8,7 @@ import { CardComponent } from './CardComponent';
 
 const AdminStats = () => {
     const { data: cycleData } = useGetCycleQuery();
-    // const { data: users = [] } = useGetusersQuery(); 
+  
     const { data, isLoading, error } = useGetusersQuery({ page: 1, limit: 4 });
 
     if (isLoading) return <div>Loading...</div>;
