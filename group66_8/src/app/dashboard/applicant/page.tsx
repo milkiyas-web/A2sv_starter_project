@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import React from "react";
 import Check from "./icons/Check";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const page = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const page = () => {
   return (
     <div className="w-[1280px] m-auto">
       <div>
-        <Card className="bg-gray-100 border-none shadow-none">
+        <Card className="bg-gray-100 border-none shadow-none mb-8">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
               Welcome, {userName}!
@@ -49,7 +50,7 @@ const page = () => {
               onClick={() => {
                 router.push("/dashboard/applicant/apply");
               }}
-              className="bg-white text-[#4F46E5] p-5 border-none outline-none hover:bg-[#ffffffe2] transition-colors"
+              className="bg-white text-[#4F46E5] p-5 border-none outline-none hover:bg-[#ffffffe2] transition-colors cursor-pointer"
             >
               Start Application
             </Button>
@@ -79,23 +80,25 @@ const page = () => {
                   />
                 </div>
                 <CardFooter className="p-0">
-                  <div className="flex items-center font-semibold ">
-                    Go to profile
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-4"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                      />
-                    </svg>
-                  </div>
+                  <Link href="/dashboard/profile">
+                    <div className="flex items-center font-semibold ">
+                      Go to profile
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-4"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
                 </CardFooter>
               </CardDescription>
             </CardHeader>
@@ -149,18 +152,18 @@ const page = () => {
                 Helpful Resources
               </CardTitle>
               <CardFooter className="flex flex-col items-start p-0">
-                <Button
-                  variant="link"
-                  className="text-[#4F46E5] p-0 hover:no-underline"
+                <Link
+                  href="/tips-for-great-application" // update with actual path
+                  className="text-[#4F46E5] p-0 hover:no-underline font-semibold"
                 >
                   Tips for a Great Application
-                </Button>
-                <Button
-                  variant="link"
-                  className="text-[#4F46E5] p-0 hover:no-underline"
+                </Link>
+                <Link
+                  href="/a2sv-problem-solving-guide" // update with actual path
+                  className="text-[#4F46E5] p-0 hover:no-underline mt-1 font-semibold"
                 >
                   A2SV Problem Solving Guide
-                </Button>
+                </Link>
               </CardFooter>
             </CardHeader>
           </Card>
