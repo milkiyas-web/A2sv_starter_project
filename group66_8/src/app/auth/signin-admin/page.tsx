@@ -3,7 +3,7 @@ import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation"; // Import useRouter
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
@@ -15,7 +15,7 @@ function SigninAdmin() {
   const { errors } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Initialize router
+  const router = useRouter();
 
   const onSubmit = async (data: User) => {
     setError(null);
@@ -24,16 +24,16 @@ function SigninAdmin() {
       password: data.password,
       role: "Admin",
       rememberme: rememberMe,
-      redirect: false, 
+      redirect: false,
     });
 
     if (res?.error) {
       setError(res.error);
       console.error("Sign-in error:", res.error);
     } else {
-    await getSession();
-    router.refresh()
-      
+      await getSession();
+      router.refresh()
+
       router.push("/dashboard/admin");
     }
   };

@@ -16,13 +16,13 @@ const bigCardData = [
         title: "Manage Cycles",
         description: "Create and manage application cycles.",
         footer: "Go to Cycles",
-        link: "/cycles"
+        link: "/admincycles"
     },
     {
         title: "Recent Admin Activity",
         description: "Create and manage application cycles.",
         footer: "New User Jane R. created.",
-        link: ""
+        link: "/dashboardanalytics"
     }
 ]
 
@@ -50,7 +50,7 @@ const page = () => {
                         <CardDescription className="text-[#4B5563] text-base">
                             Explore application data and platform insights.
                         </CardDescription>
-                        <Link href={`/dashboard/admin/analytics`}>
+                        <Link href={`/dashboard/admin/dashboardanalytics`}>
                             <div className="flex text-[#4F46E5] items-center gap-1 text-sm mt-2">
                                 <p className="hover:underline">Go to Analytics</p>
                                 <ArrowRight className="w-4 h-4" />

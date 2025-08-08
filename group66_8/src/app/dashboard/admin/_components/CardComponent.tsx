@@ -1,35 +1,5 @@
-// import React from 'react'
-// import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card'
 
-// type CardProps = {
-//     description?: string | number;
-//     title?: string;
-//     action?: string;
-//     footer?: string;
-//     content?: string;
-// }
-// const CardComponent = ({ description, title, action, content, footer }: CardProps) => {
-//     return (
-//         <Card>
-//             <CardHeader>
-//                 <CardTitle>{title}</CardTitle>
-//                 <CardDescription>{description}</CardDescription>
-//                 <CardAction>{action}</CardAction>
-//             </CardHeader>
-//             <CardContent>
-//                 <p>{content}</p>
-//             </CardContent>
-//             <CardFooter>
-//                 <p>{footer}</p>
-//             </CardFooter>
-
-//         </Card>
-//     )
-// }
-
-// export default CardComponent
-
-import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader } from '@/components/ui/card';
 import Link from 'next/link';
 import React from 'react';
 import { ArrowRight } from 'lucide-react';

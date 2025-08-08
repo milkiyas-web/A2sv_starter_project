@@ -28,7 +28,6 @@ export default function CreateUserPage() {
             [field]: value
         }));
 
-        // Clear error when user starts typing
         if (errors[field as keyof typeof errors]) {
             setErrors(prev => ({
                 ...prev,
