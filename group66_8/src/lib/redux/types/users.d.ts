@@ -26,9 +26,9 @@ export interface GetusersResponse {
   data: {
     users: User[];
     count: number;
-    total_count: number;
     page: number;
     limit: number;
+    total_count: number;
   };
   message: string;
 }

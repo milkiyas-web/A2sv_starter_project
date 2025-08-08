@@ -22,7 +22,7 @@ export const internalApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL + "/api",
     credentials: "include",
   }),
-  tagTypes: ["User"],
+  tagTypes: ["User", "Cycle"],
 
   endpoints: () => ({}),
 });

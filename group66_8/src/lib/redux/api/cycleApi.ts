@@ -1,13 +1,12 @@
 import { CreateCyclePayload, Cycle, GetCyclesResponse } from "../types/cycle";
-import { baseApi } from "./baseApi";
+import { internalApi } from "./baseApi";
 
-export const cycleApi = baseApi.injectEndpoints({
+export const cycleApi = internalApi.injectEndpoints({
   endpoints: (build) => ({
     getCycle: build.query<GetCyclesResponse, void>({
-      query: (payload) => ({
-        url: "/cycles",
+      query: () => ({
+        url: `cycles`,
         method: "GET",
-        body: payload,
       }),
       providesTags: ["Cycle"],
     }),
@@ -25,5 +24,14 @@ export const cycleApi = baseApi.injectEndpoints({
     }),
   }),
 });
+// src/lib/api/cycles.ts
 
+export async function fetchCycles(): Promise<GetCyclesResponse> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/cycles`, {
+    method: "GET",
+  });
+  const json = await res.json();
+  if (!res.ok) throw new Error(json?.message || "Failed to fetch cycles");
+  return json as GetCyclesResponse;
+}
 export const { useCreateCycleMutation, useGetCycleQuery } = cycleApi;
