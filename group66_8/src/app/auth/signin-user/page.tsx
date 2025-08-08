@@ -7,8 +7,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import { Logo } from "@/lib";
-import Image from "next/image"; 
+import Image from "next/image";
+import type { Session as NextAuthSession } from "next-auth";
 import { useRouter } from "next/navigation";
+
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
   const router=useRouter()
@@ -17,14 +19,14 @@ function SigninUser() {
   const [error, setError] = useState<string | null>(null);
 
   const onSubmit = async (data: User) => {
-    setError(null); 
+    setError(null);
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
       role: "user",
       rememberme: rememberMe,
       redirect: false,
-      callbackUrl: "/Dashboard",
+      callbackUrl: "/",
     });
 
     if (res?.error) {
