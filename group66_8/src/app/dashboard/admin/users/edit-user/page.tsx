@@ -3,6 +3,7 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 export default function EditUserPage() {
   const router = useRouter();
@@ -18,15 +19,24 @@ export default function EditUserPage() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch(`/api/users/${userId}`);
-      const user = await res.json();
-
-      setFormData({
-        fullName: user.fullName,
-        email: user.email,
-        password: '',
-        role: user.role,
-      });
+      try {
+        const res = await fetch(`/api/users/${userId}`);
+        if (!res.ok) {
+          if (res.status === 401) toast.error('You are not authenticated');
+          else if (res.status === 403) toast.error('You do not have permission to view this user');
+          else toast.error('Failed to load user');
+          return;
+        }
+        const user = await res.json();
+        setFormData({
+          fullName: user.fullName,
+          email: user.email,
+          password: '',
+          role: user.role,
+        });
+      } catch (e) {
+        toast.error('Network error while loading user');
+      }
     };
 
     if (userId) {
@@ -42,24 +52,41 @@ export default function EditUserPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await fetch(`/api/users/${userId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-
-    router.push('/users');
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        if (res.status === 401) toast.error('You are not authenticated');
+        else if (res.status === 403) toast.error('You do not have permission to update this user');
+        else toast.error('Failed to update user');
+        return;
+      }
+      toast.success('User updated successfully');
+      router.push('/users');
+    } catch (e) {
+      toast.error('Network error while updating user');
+    }
   };
 
   const handleDelete = async () => {
     const confirmed = confirm('Are you sure you want to delete this user?');
     if (!confirmed) return;
-
-    await fetch(`/api/users/${userId}`, {
-      method: 'DELETE',
-    });
-
-    router.push('/users');
+    try {
+      const res = await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+      if (!res.ok) {
+        if (res.status === 401) toast.error('You are not authenticated');
+        else if (res.status === 403) toast.error('You do not have permission to delete this user');
+        else toast.error('Failed to delete user');
+        return;
+      }
+      toast.success('User deleted successfully');
+      router.push('/users');
+    } catch (e) {
+      toast.error('Network error while deleting user');
+    }
   };
 
   return (

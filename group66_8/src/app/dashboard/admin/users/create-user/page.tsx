@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 export default function CreateUserPage() {
     const [formData, setFormData] = useState({
@@ -101,10 +102,14 @@ export default function CreateUserPage() {
             }
 
             const result = await res.json();
-            alert('User created successfully!');
+            toast.success('User created successfully!');
             handleCancel();
         } catch (err: any) {
-            alert(err.message || 'An unexpected error occurred');
+            if (err?.message?.toLowerCase().includes('not authenticated')) {
+                toast.error('You must be signed in to perform this action.');
+            } else {
+                toast.error(err?.message || 'An unexpected error occurred');
+            }
         }
     };
 

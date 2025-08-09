@@ -10,6 +10,7 @@ import { FaLock } from "react-icons/fa";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Logo } from "@/lib";
+import { toast } from "sonner";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -30,8 +31,10 @@ function SigninAdmin() {
 
     if (res?.error) {
       setError(res.error);
+      toast.error(res.error || "Sign-in failed");
       console.error("Sign-in error:", res.error);
     } else {
+      toast.success("Signed in successfully");
       await getSession();
       router.refresh()
 
