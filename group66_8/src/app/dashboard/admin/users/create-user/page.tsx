@@ -28,6 +28,7 @@ export default function CreateUserPage() {
             [field]: value
         }));
 
+        // Clear error when user starts typing
         if (errors[field as keyof typeof errors]) {
             setErrors(prev => ({
                 ...prev,
@@ -68,14 +69,47 @@ export default function CreateUserPage() {
         return !Object.values(newErrors).some(error => error !== '');
     };
 
-    const handleSaveUser = () => {
-        if (validateForm()) {
-            console.log('User data:', formData);
+    const handleSaveUser = async () => {
+        if (!validateForm()) return;
+
+        try {
+
+            const sessionRes = await fetch('/api/auth/session');
+            const session = await sessionRes.json();
+
+            if (!session?.user) {
+                throw new Error('Not authenticated');
+            }
+
+            const res = await fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.accessToken}`
+                },
+                body: JSON.stringify({
+                    full_name: formData.fullName,
+                    email: formData.email,
+                    password: formData.password,
+                    role: formData.role
+                }),
+            });
+
+            if (!res.ok) {
+                const result = await res.json();
+                throw new Error(result.message || 'Failed to create user');
+            }
+
+            const result = await res.json();
             alert('User created successfully!');
+            handleCancel();
+        } catch (err: any) {
+            alert(err.message || 'An unexpected error occurred');
         }
     };
 
     const handleCancel = () => {
+        // Reset form or navigate back
         setFormData({
             fullName: '',
             email: '',
@@ -125,6 +159,7 @@ export default function CreateUserPage() {
                                 )}
                             </div>
 
+                            {/* Email Address */}
                             <div className="space-y-2">
                                 <Label htmlFor="email" className="text-sm font-medium text-gray-700">
                                     Email address
@@ -142,6 +177,7 @@ export default function CreateUserPage() {
                                 )}
                             </div>
 
+                            {/* Password */}
                             <div className="space-y-2">
                                 <Label htmlFor="password" className="text-sm font-medium text-gray-700">
                                     Password
@@ -159,6 +195,7 @@ export default function CreateUserPage() {
                                 )}
                             </div>
 
+                            {/* Role */}
                             <div className="space-y-2">
                                 <Label htmlFor="role" className="text-sm font-medium text-gray-700">
                                     Role
@@ -181,6 +218,7 @@ export default function CreateUserPage() {
                             </div>
                         </div>
 
+                        {/* Action Buttons */}
                         <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
                             <Button
                                 type="button"
