@@ -1,5 +1,7 @@
+"use client"
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { AvatarFallback } from "@radix-ui/react-avatar";
+import { ClockFading, Globe, Plus, Star } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -17,10 +19,10 @@ export default function Home() {
             src="/bg.png"
             alt="Background"
             fill
-            className="object-cover object-center opacity-70"
+            className="object-cover object-center opacity-40"
           />
         </div>
-        <div className="relative z-10 flex flex-col items-center text-center px-4 py-24">
+        <div className="relative z-10 flex flex-col items-start lg:ml-25 px-4 py-24">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Forge Your Future in Tech
           </h1>
@@ -28,16 +30,16 @@ export default function Home() {
             Join an elite community of Africa’s brightest minds, and get fast-tracked to a
             software engineering career at the world’s leading tech companies.
           </p>
-          <button className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg font-semibold">
+          <button onClick={handleClick} className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-lg font-semibold">
             Start Your Application
           </button>
         </div>
       </section>
 
       {/* Logos */}
-      <section className="flex justify-center gap-12 py-8 bg-white">
-        <Image src="/variant.svg" alt="Next.js" width={100} height={40} />
-        <Image src="/vercel.svg" alt="Vercel" width={100} height={40} />
+      <section className="flex justify-center gap-40 py-8 bg-white">
+        <Image src="/variant.png" alt="Next.js" width={100} height={40} />
+        <Image src="/variant2.png" alt="Vercel" width={100} height={40} />
       </section>
 
       {/* Journey Section */}
@@ -53,23 +55,28 @@ export default function Home() {
             {
               title: "Phase 1: Foundations",
               desc: "Master data structures, algorithms, and problem-solving techniques in an intensive 3-month bootcamp.",
+              svg: <Plus />
+
             },
             {
               title: "Phase 2: Real-world Projects",
               desc: "Apply your skills to build complex projects, collaborate in teams, and prepare for technical interviews.",
+              svg: <ClockFading />
             },
             {
               title: "Phase 3: Internship Placement",
               desc: "We help you secure internships at top global tech companies to gain invaluable experience.",
+              svg: <Globe />
             },
             {
               title: "Phase 4: Full-Time Conversion",
               desc: "Excel in your internship and convert it into a full-time offer, launching your global career.",
+              svg: <Star />
             },
           ].map((phase, i) => (
             <div key={i} className="text-left">
               <div className="bg-indigo-100 w-10 h-10 flex items-center justify-center rounded-md mb-4">
-                <span className="text-indigo-600 font-bold">{i + 1}</span>
+                <span className="text-indigo-600 font-bold">{phase.svg}</span>
               </div>
               <h3 className="font-semibold text-lg mb-2">{phase.title}</h3>
               <p className="text-gray-600">{phase.desc}</p>

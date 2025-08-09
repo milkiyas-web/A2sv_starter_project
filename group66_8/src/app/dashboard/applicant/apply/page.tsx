@@ -21,7 +21,6 @@ const page = () => {
   const token = session?.accessToken;
   console.log(token);
   const dispatch = useDispatch()
-  const router = useRouter()
   const router = useRouter();
 
   console.log(token, "valid token");
