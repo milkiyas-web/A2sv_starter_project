@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Cycle } from '@/types/globaltype';
+import { useSession } from 'next-auth/react';
 // import { useSession } from 'next-auth/react';
 // import { useRouter } from 'next/navigation';
 // import { useToast } from '@/components/ui/use-toast'; 
@@ -13,14 +14,9 @@ interface Props {
 export function CycleCard({ cycle }: Props) {
 
 
-  // const session = useSession() as {
-  //   data: NextAuthSession | null;
-  //   status: 'authenticated' | 'loading' | 'unauthenticated';
-  // };
+  const session = useSession()
 
-  // const router = useRouter();
-  // const session = useSession();
-  // const { toast } = useToast(); 
+ 
 
   const getRandomHexColor = () => {
     const r = Math.floor(Math.random() * 100);
@@ -33,7 +29,20 @@ export function CycleCard({ cycle }: Props) {
     e.preventDefault();
     e.stopPropagation();
 
-
+    const link_activate=`https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${cycle.id}/activate`
+    const link_deactivate=`https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${cycle.id}/deactivate`
+    const res=await fetch(cycle.is_active? link_deactivate :link_activate,{
+      method:"PATCH",
+      headers: {
+  "Content-Type": "application/json",
+  authorization: `Bearer ${session.data?.accessToken}`
+}
+    })
+    if(!res.ok){
+      const err=await res.json()
+      console.error(err.message)
+      return
+    }
     window.location.reload();
   };
 
@@ -46,7 +55,7 @@ export function CycleCard({ cycle }: Props) {
           aria-label={`Close cycle ${cycle.name}`}
           style={{ backgroundColor: getRandomHexColor() }}
         >
-          Close
+          {cycle.is_active? <span>close</span>:<span>open</span>}
         </Button>
       </div>
       <div className="flex justify-between items-center">
