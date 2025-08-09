@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useGetusersQuery } from '@/lib/redux/api/userApi';
 import { User } from '@/lib/redux/types/users';
 import { Button } from '@/components/ui/button';
-import { Avatar } from '@radix-ui/react-avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function UsersPage() {
@@ -12,6 +12,18 @@ export default function UsersPage() {
     const [currentPage, setCurrentPage] = useState(1)
     const { data, isLoading, isError } = useGetusersQuery({ page: currentPage, limit: 5 });
     const [searchTerm, setSearchTerm] = useState('');
+
+    const getInitialsFromFullName = (fullName: string): string => {
+        if (!fullName) return '?'
+        const nameParts = fullName
+            .trim()
+            .split(/\s+/)
+            .filter(Boolean)
+        if (nameParts.length === 0) return '?'
+        const firstInitial = nameParts[0].charAt(0)
+        const lastInitial = nameParts.length > 1 ? nameParts[nameParts.length - 1].charAt(0) : ''
+        return `${firstInitial}${lastInitial}`.toUpperCase()
+    }
 
     console.log(data)
 
@@ -115,14 +127,21 @@ export default function UsersPage() {
                 {filteredUsers.map((user: User) => (
                     <li key={user.id} className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] items-start md:items-center p-3 border">
                         <div className='flex items-start md:items-center gap-3'>
-                            <Avatar className='w-10 h-10'><img src="/150.png" /></Avatar>
+                            <Avatar className='w-10 h-10'>
+                                <AvatarFallback>{getInitialsFromFullName(user.full_name)}</AvatarFallback>
+                            </Avatar>
                             <div className="overflow-hidden">
                                 <p className="font-semibold truncate max-w-[180px]">{user.full_name}</p>
                                 <p className="text-sm text-gray-600 truncate max-w-[180px]">{user.email}</p>
                             </div>
                         </div>
                         <p className='text-gray-500 text-sm md:text-base'>{user.role}</p>
-                        <p className='text-gray-500 text-sm md:text-base'>Active</p>
+                        <p
+                            className={`text-sm md:text-base inline-flex w-16 items-center px-2 py-1 rounded-full font-medium ${user.is_active ? 'bg-blue-100 text-blue-700' : 'bg-yellow-100 text-yellow-700'
+                                }`}
+                        >
+                            {user.is_active ? 'Active' : 'Inactive'}
+                        </p>
                         <div className='flex gap-3 justify-start md:justify-end text-sm'>
                             <button className='text-indigo-600'>Edit</button>
                             <button className='text-red-600'>Delete</button>

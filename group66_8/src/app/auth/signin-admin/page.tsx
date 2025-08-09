@@ -3,16 +3,17 @@ import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Logo } from "@/lib";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
-  const { errors } = formState;
+  const { errors, isSubmitting } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -81,14 +82,25 @@ function SigninAdmin() {
               />
               <span>Remember me</span>
             </label>
-            
+
           </div>
           <Button
             type="submit"
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
             className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
           >
-            <FaLock />
-            <span>Sign in</span>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <FaLock />
+                <span>Sign in</span>
+              </>
+            )}
           </Button>
         </form>
       </div>
