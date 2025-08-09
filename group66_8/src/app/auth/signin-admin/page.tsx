@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
 import Image from "next/image";
+import { Logo } from "@/lib";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -41,7 +42,7 @@ function SigninAdmin() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
         <div className="flex justify-center mb-6">
-          <Image src="/logo-blue.svg.png" alt="A2sv image" className="h-16" />
+          <Image src={Logo} alt="A2sv image" className="h-16" />
         </div>
         <div className="text-2xl font-semibold text-center mb-2">
           Sign in to your account
