@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
@@ -98,9 +98,7 @@ export default function RoleSignUpPage() {
         }, 2000);
       }
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
       console.error("Registration error:", error);
     }
   };

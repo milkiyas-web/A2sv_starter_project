@@ -3,6 +3,12 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function EditUserPage() {
   const router = useRouter();
@@ -18,15 +24,24 @@ export default function EditUserPage() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await fetch(`/api/users/${userId}`);
-      const user = await res.json();
-
-      setFormData({
-        fullName: user.fullName,
-        email: user.email,
-        password: '',
-        role: user.role,
-      });
+      try {
+        const res = await fetch(`/api/users/${userId}`);
+        if (!res.ok) {
+          if (res.status === 401) toast.error('You are not authenticated');
+          else if (res.status === 403) toast.error('You do not have permission to view this user');
+          else toast.error('Failed to load user');
+          return;
+        }
+        const user = await res.json();
+        setFormData({
+          fullName: user.fullName,
+          email: user.email,
+          password: '',
+          role: user.role,
+        });
+      } catch (e) {
+        toast.error('Network error while loading user');
+      }
     };
 
     if (userId) {
@@ -34,113 +49,161 @@ export default function EditUserPage() {
     }
   }, [userId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleRoleChange = (value: string) => {
+    setFormData(prev => ({ ...prev, role: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await fetch(`/api/users/${userId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
-    });
-
-    router.push('/users');
+    try {
+      const res = await fetch(`/api/users/${userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        if (res.status === 401) toast.error('You are not authenticated');
+        else if (res.status === 403) toast.error('You do not have permission to update this user');
+        else toast.error('Failed to update user');
+        return;
+      }
+      toast.success('User updated successfully');
+      router.push('/users');
+    } catch (e) {
+      toast.error('Network error while updating user');
+    }
   };
 
   const handleDelete = async () => {
     const confirmed = confirm('Are you sure you want to delete this user?');
     if (!confirmed) return;
-
-    await fetch(`/api/users/${userId}`, {
-      method: 'DELETE',
-    });
-
-    router.push('/users');
+    try {
+      const res = await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+      if (!res.ok) {
+        if (res.status === 401) toast.error('You are not authenticated');
+        else if (res.status === 403) toast.error('You do not have permission to delete this user');
+        else toast.error('Failed to delete user');
+        return;
+      }
+      toast.success('User deleted successfully');
+      router.push('/users');
+    } catch (e) {
+      toast.error('Network error while deleting user');
+    }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-md mt-10">
-      <h1 className="text-2xl font-semibold mb-6">Edit User: {formData.fullName}</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-medium">Full name</label>
-          <input
-            type="text"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            className="w-full mt-1 border p-2 rounded"
-          />
-        </div>
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-6xl px-4 py-4">
+        <Card className="border-0 shadow-none bg-gray-50">
+          <CardHeader className="px-0 pb-8">
+            <CardTitle className="text-3xl font-bold text-gray-900">
+              Edit User: {formData.fullName || '—'}
+            </CardTitle>
+            <CardDescription className="text-base text-gray-600 mt-2">
+              Update the user's information and role.
+            </CardDescription>
+          </CardHeader>
+        </Card>
 
-        <div>
-          <label className="block font-medium">Email address</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            readOnly
-            className="w-full mt-1 border p-2 rounded bg-gray-100"
-          />
-        </div>
+        <Card className=" bg-white shadow-sm border border-gray-200">
+          <CardContent className="p-8">
+            <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <Label htmlFor="fullName" className="text-sm font-medium text-gray-700">
+                  Full name
+                </Label>
+                <Input
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  className="h-11"
+                  placeholder="Enter full name"
+                />
+              </div>
 
-        <div>
-          <label className="block font-medium">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Set a new password (optional)"
-            className="w-full mt-1 border p-2 rounded"
-          />
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email address
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={formData.email}
+                  readOnly
+                  className="h-11 bg-gray-100"
+                  placeholder="Email address"
+                />
+              </div>
 
-        <div>
-          <label className="block font-medium">Role</label>
-          <select
-            name="role"
-            value={formData.role}
-            onChange={handleChange}
-            className="w-full mt-1 border p-2 rounded"
-          >
-            <option value="Admin">Admin</option>
-            <option value="Reviewer">Reviewer</option>
-            <option value="Applicant">Applicant</option>
-          </select>
-        </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  className="h-11"
+                  placeholder="Set a new password (optional)"
+                />
+              </div>
 
-        <div className="flex justify-between pt-6">
-          <button
-            type="button"
-            onClick={() => router.back()}
-            className="px-4 py-2 border rounded"
-          >
-            Cancel
-          </button>
+              <div className="space-y-2">
+                <Label htmlFor="role" className="text-sm font-medium text-gray-700">
+                  Role
+                </Label>
+                <Select value={formData.role} onValueChange={handleRoleChange}>
+                  <SelectTrigger className="h-11">
+                    <SelectValue placeholder="Select a role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Applicant">Applicant</SelectItem>
+                    <SelectItem value="Manager">Manager</SelectItem>
+                    <SelectItem value="Admin">Admin</SelectItem>
+                    <SelectItem value="Reviewer">Reviewer</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-          <div className="flex gap-3">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded"
-            >
-              Update User
-            </button>
-
-            <button
-              type="button"
-              onClick={handleDelete}
-              className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded"
-            >
-              Delete User
-            </button>
-          </div>
-        </div>
-      </form>
+              <div className="md:col-span-2 flex justify-end gap-3 mt-2 pt-6 border-t border-gray-200">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => router.back()}
+                  className="px-6 py-2 h-10"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  className="px-6 py-2 h-10 bg-[#4F46E5] hover:bg-blue-700 text-white"
+                >
+                  Update User
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleDelete}
+                  className="px-6 py-2 h-10 bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Delete User
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
