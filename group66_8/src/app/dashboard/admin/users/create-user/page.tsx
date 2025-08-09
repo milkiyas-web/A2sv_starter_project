@@ -213,8 +213,6 @@ export default function CreateUserPage() {
                                         <SelectItem value="applicant">Applicant</SelectItem>
                                         <SelectItem value="manager">Manager</SelectItem>
                                         <SelectItem value="admin">Admin</SelectItem>
-                                        <SelectItem value="hr">Reviewer</SelectItem>
-                                        <SelectItem value="employee">Employee</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 {errors.role && (
@@ -236,7 +234,7 @@ export default function CreateUserPage() {
                             <Button
                                 type="button"
                                 onClick={handleSaveUser}
-                                className="px-6 py-2 h-10 bg-blue-600 hover:bg-blue-700 text-white"
+                                className="px-6 py-2 h-10 bg-[#4F46E5] hover:bg-blue-700 text-white"
                             >
                                 Save User
                             </Button>
