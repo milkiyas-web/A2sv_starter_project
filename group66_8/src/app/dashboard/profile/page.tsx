@@ -9,6 +9,7 @@ import profile from "../../../../public/profile.svg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 type User = {
   success: boolean;
@@ -129,7 +130,8 @@ function UserProfile() {
       }
 
       resetPassword();
-      alert("Password changed successfully!");
+
+      toast.success("Password changed successfully!")
     } catch (err) {
       if (err instanceof Error) {
         setFormError(err.message);
@@ -164,7 +166,8 @@ function UserProfile() {
 
       const updatedProfile: User = await res.json();
       setData(updatedProfile);
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!!")
+
     } catch (e) {
       setProfileFormError("An error occurred while updating your profile");
       console.error("Profile update error:", e);

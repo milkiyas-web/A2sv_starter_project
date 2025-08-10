@@ -15,6 +15,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { completeChecklistItem, goToNextFormStep, setApplicationProgress, setFormStepStatus } from "@/lib/redux/slice/applicationSlice";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const page = () => {
   const { data: session } = useSession();
@@ -89,7 +91,7 @@ const page = () => {
       );
 
       if (res.status === 409) {
-        alert(
+        toast.error(
           "You have already submitted an application. Duplicate submissions are not allowed."
         );
         return;
