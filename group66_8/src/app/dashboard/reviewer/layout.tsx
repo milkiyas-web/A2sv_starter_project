@@ -1,21 +1,23 @@
-// app/dashboard/reviewer/layout.tsx
-import type { ReactNode } from "react";
-import { Toaster } from "sonner";
+import ApplicantNav from "@/components/ApplicantNav";
+import { BaseFooter } from "@/components/Footer";
+export const metadata = { title: "Admin Page" }
 
-interface Props {
-  children: ReactNode;
-}
 
-export const metadata = {
-  title: "Reviewer Dashboard",
-  description: "Manage and review assigned applications",
-};
-
-export default function ReviewerLayout({ children }: Props) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <Toaster richColors position="top-right" />
-      {children}
-    </div>
+    <html lang="en">
+      <body
+        className="bg-gray-100"
+      >
+        <ApplicantNav />
+        {children}
+        <BaseFooter />
+      </body>
+    </html>
   );
 }
+

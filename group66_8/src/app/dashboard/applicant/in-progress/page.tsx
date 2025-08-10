@@ -114,7 +114,7 @@ export default async function ApplicationStatusPage() {
           <h2 className="text-xl font-bold mb-4">No Application Found</h2>
           <p className="mb-4">You haven&#39;t submitted an application yet.</p>
           <Button asChild className="bg-blue-600 hover:bg-blue-700">
-            <Link href="/application/new">Start New Application</Link>
+            <Link href="/dashboard/applicant/apply">Start New Application</Link>
           </Button>
         </Card>
       </div>
@@ -160,13 +160,12 @@ export default async function ApplicationStatusPage() {
                     </div>
                     {index < statusStages.length - 1 && (
                       <div
-                        className={`w-1 h-16 ${
-                          stage.completed
-                            ? "bg-green-200"
-                            : stage.active
+                        className={`w-1 h-16 ${stage.completed
+                          ? "bg-green-200"
+                          : stage.active
                             ? "bg-blue-200"
                             : "bg-gray-200"
-                        }`}
+                          }`}
                       />
                     )}
                   </div>
@@ -175,21 +174,19 @@ export default async function ApplicationStatusPage() {
                   >
                     <div className="flex flex-col">
                       <h3
-                        className={`text-lg font-medium ${
-                          stage.completed
-                            ? "text-gray-800"
-                            : stage.active
+                        className={`text-lg font-medium ${stage.completed
+                          ? "text-gray-800"
+                          : stage.active
                             ? "text-blue-600"
                             : "text-gray-500"
-                        }`}
+                          }`}
                       >
                         {stage.title}
                       </h3>
                       {stage.date && (
                         <span
-                          className={`text-sm ${
-                            stage.active ? "text-blue-500" : "text-gray-500"
-                          } mb-2`}
+                          className={`text-sm ${stage.active ? "text-blue-500" : "text-gray-500"
+                            } mb-2`}
                         >
                           {stage.date}
                         </span>

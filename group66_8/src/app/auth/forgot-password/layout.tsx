@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import ForgotPasswordNav from "@/components/ForgotPasswordNav";
+import { BaseFooter } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Forgot Password",
@@ -6,5 +8,11 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <ForgotPasswordNav />
+      <main className="">{children}</main>
+      <BaseFooter />
+    </div>
+  );
 }
