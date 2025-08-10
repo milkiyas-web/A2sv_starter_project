@@ -24,6 +24,13 @@ export const userApi = internalApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
+    updateUsersById: build.mutation<User, string>({
+      query: (userId) => ({
+        url: `/admin/users/${userId}`,
+        method: "PUT",
+      }),
+      // providesTags: ["User"],
+    }),
     createUser: build.mutation<
       { success: boolean; data: User },
       CreateUserPayload
