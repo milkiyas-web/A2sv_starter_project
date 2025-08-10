@@ -3,7 +3,7 @@ import ApplicantNav from "@/components/ApplicantNav";
 import { BaseFooter } from "@/components/Footer";
 
 
-export const metadata = { title: "Manager Page" }
+export const metadata = { title: "Profile Page" }
 
 
 export default function RootLayout({

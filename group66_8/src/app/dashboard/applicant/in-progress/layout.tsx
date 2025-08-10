@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BaseFooter } from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "In Progress Applications",
@@ -6,5 +7,10 @@ export const metadata: Metadata = {
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className="p-4 bg-white">{children}</div>;
+  return (
+    <div className="p-4 bg-white">
+      {children}
+      <BaseFooter />
+    </div>
+  );
 }
