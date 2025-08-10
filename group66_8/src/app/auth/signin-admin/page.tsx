@@ -36,7 +36,7 @@ function SigninAdmin() {
     } else {
       toast.success("Signed in successfully");
       await getSession();
-      router.refresh()
+      router.refresh();
 
       router.push("/dashboard/admin");
     }
@@ -85,13 +85,10 @@ function SigninAdmin() {
               />
               <span>Remember me</span>
             </label>
-
           </div>
           <Button
             type="submit"
-            disabled={isSubmitting}
-            aria-busy={isSubmitting}
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
           >
             {isSubmitting ? (
               <>

@@ -23,7 +23,7 @@ const page = () => {
   const dispatch = useDispatch()
   const router = useRouter();
 
-  console.log(token, "valid token");
+  // console.log(token, "valid token");
   if (!token) {
     router.push("/auth/signin-user");
     console.log("token expire");
