@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SigninNav from "@/components/SigninNav";
+import { BaseFooter } from "@/components/Footer";
 
 export const metadata: Metadata = {
     title: "A2SV - Admin Sign In",
@@ -11,6 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="min-h-screen bg-gray-100">
             <SigninNav />
             <main className="">{children}</main>
+            <BaseFooter />
         </div>
     );
 }

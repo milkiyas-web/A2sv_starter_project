@@ -21,7 +21,7 @@ export const signupLinks: NavLinks[] = [
   { name: "The Journey", href: "/" },
   { name: "About", href: "/" },
   { name: "Testmonials", href: "/" },
-  { name: "Analytics", href: "/auth/signin-user" },
+  { name: "Apply", href: "/auth/signin-user" },
 ];
 
 export const forgotPasswordLinks: NavLinks[] = [

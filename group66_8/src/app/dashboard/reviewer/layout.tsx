@@ -1,4 +1,5 @@
 import ApplicantNav from "@/components/ApplicantNav";
+import { BaseFooter } from "@/components/Footer";
 export const metadata = { title: "Admin Page" }
 
 
@@ -14,6 +15,7 @@ export default function RootLayout({
       >
         <ApplicantNav />
         {children}
+        <BaseFooter />
       </body>
     </html>
   );
