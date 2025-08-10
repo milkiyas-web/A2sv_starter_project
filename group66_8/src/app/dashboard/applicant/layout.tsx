@@ -1,10 +1,23 @@
-import type { Metadata } from "next";
+import AdminNav from "@/components/AdminNav";
+import ApplicantNav from "@/components/ApplicantNav";
 
-export const metadata: Metadata = {
-  title: "Applicant Dashboard",
-  description: "View your applications that are in progress",
-};
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  return <div className="p-4 bg-white">{children}</div>;
+export const metadata = { title: "Applicant Page" }
+
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body
+        className="bg-gray-100"
+      >
+        <ApplicantNav />
+        {children}
+      </body>
+    </html>
+  );
 }

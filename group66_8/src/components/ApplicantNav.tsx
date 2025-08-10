@@ -1,12 +1,12 @@
 "use client";
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
+import { adminLinks, applicantLinks } from './navSchema'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/lib';
-import { signinLinks } from './navSchema';
 import { Menu, X } from 'lucide-react'
-const SigninNav = () => {
+const ApplicantNav = () => {
     const path = usePathname()
     const [isOpen, setIsOpen] = useState(false)
 
@@ -24,8 +24,12 @@ const SigninNav = () => {
                     />
                 </div>
 
+                <div className='hidden md:flex items-center gap-4'>
+                    <Link href="/dashboard/applicant/in-progress" className='text-sm hover:underline'>Dashboard</Link>
+                </div>
+
                 <div className='hidden md:flex gap-6'>
-                    {signinLinks.map((link) => (
+                    {applicantLinks.map((link) => (
                         <Link
                             key={link.name}
                             href={link.href}
@@ -53,7 +57,8 @@ const SigninNav = () => {
             {isOpen && (
                 <div className='md:hidden absolute left-0 right-0 top-full bg-white shadow-md border-t z-50'>
                     <div className='px-4 py-3 space-y-1'>
-                        {signinLinks.map((link) => (
+                        <Link href="/dashboard/applicant/in-progress" className='block px-2 py-2 rounded hover:bg-gray-50'>Dashboard</Link>
+                        {applicantLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
@@ -69,4 +74,4 @@ const SigninNav = () => {
     )
 }
 
-export default SigninNav
+export default ApplicantNav

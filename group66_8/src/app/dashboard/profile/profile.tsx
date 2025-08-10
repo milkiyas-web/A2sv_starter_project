@@ -1,7 +1,8 @@
 import AdminNav from "@/components/AdminNav";
+import ApplicantNav from "@/components/ApplicantNav";
 
 
-export const metadata = { title: "Admin Page" }
+export const metadata = { title: "Profile Page" }
 
 
 export default function RootLayout({
@@ -14,7 +15,7 @@ export default function RootLayout({
             <body
                 className="bg-gray-100"
             >
-                <AdminNav />
+                <ApplicantNav />
                 {children}
             </body>
         </html>

@@ -1,20 +1,21 @@
 // src/app/auth/signup/layout.tsx
 import type { Metadata } from "next";
-// import "../../global.css";
+import SignupNav from "@/components/SignupNav";
 
 export const metadata: Metadata = {
   title: "A2SV - Sign Up",
   description: "Create a new applicant account",
 };
 
-export default function RootLayout({
+export default function Layout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <main className="min-h-screen flex items-center justify-center p-4">
-      {children}
-    </main>
+    <div className="bg-gray-100">
+      <SignupNav />
+      <main>{children}</main>
+    </div>
   );
 }

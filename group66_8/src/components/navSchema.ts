@@ -6,9 +6,9 @@ export type NavLinks = {
 
 export const adminLinks: NavLinks[] = [
   { name: "Dashboard", href: "/admin/dashboard" },
-  { name: "Users", href: "/admin/users" },
-  { name: "Cycles", href: "/admin/cycles" },
-  { name: "Analytics", href: "/admin/analytics" },
+  { name: "Users", href: "/dashboard/admin/users" },
+  { name: "Cycles", href: "/dashboard/admin/cycles" },
+  { name: "Analytics", href: "/dashboard/admin/dashboardanalytics" },
 ];
 
 export const signinLinks: NavLinks[] = [
@@ -29,4 +29,10 @@ export const forgotPasswordLinks: NavLinks[] = [
   { name: "About", href: "/" },
   { name: "Sucess Stories", href: "/" },
   { name: "Apply", href: "/dashboard/applicant" },
+];
+
+export const applicantLinks: NavLinks[] = [
+  { name: "Your Profile", href: "/dashboard/profile" },
+  { name: "Applicant Name", href: "" },
+  { name: "Logout", href: "" },
 ];

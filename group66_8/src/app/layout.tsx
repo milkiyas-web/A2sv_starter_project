@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Provider from "@/providers/AuthProvider";
 import { StateProvider } from "@/providers/StateProvider";
-import { ToastProvider } from "@/components/ui/use-toast";
+// import { ToastProvider } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/sonner";
 import { Inter } from "next/font/google";
 
@@ -26,13 +26,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} bg-gray-100`}
       >
-        <ToastProvider>
-          <Provider>
-            <StateProvider>
-              {children}
-            </StateProvider>
-          </Provider>
-        </ToastProvider>
+        {/* <ToastProvider> */}
+        <Provider>
+          <StateProvider>
+            {children}
+          </StateProvider>
+        </Provider>
+        {/* </ToastProvider> */}
         <Toaster />
       </body>
     </html>

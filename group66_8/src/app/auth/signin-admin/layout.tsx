@@ -1,0 +1,18 @@
+import type { Metadata } from "next";
+import SigninNav from "@/components/SigninNav";
+
+export const metadata: Metadata = {
+    title: "A2SV - Admin Sign In",
+    description: "Sign in to your admin account",
+};
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="min-h-screen bg-gray-100">
+            <SigninNav />
+            <main className="">{children}</main>
+        </div>
+    );
+}
+
+
