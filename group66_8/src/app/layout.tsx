@@ -4,8 +4,13 @@ import Provider from "@/providers/AuthProvider";
 import { StateProvider } from "@/providers/StateProvider";
 import { ToastProvider } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/sonner";
+import { Inter } from "next/font/google";
 
 
+const inter = Inter({
+  variable: "--font-inter-technology",
+  subsets: ["latin"]
+})
 export const metadata: Metadata = {
   title: "Application website",
   description: "A2SV application website",
@@ -19,8 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className="bg-gray-100"
-      // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} bg-gray-100`}
       >
         <ToastProvider>
           <Provider>
