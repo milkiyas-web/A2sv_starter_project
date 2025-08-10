@@ -3,6 +3,7 @@ export interface User {
   full_name: string;
   email: string;
   role: string;
+  is_active?: boolean;
 }
 export interface UpdateUserPayload {
   full_name: string;
@@ -24,11 +25,11 @@ export interface DeleteUserPayload {
 export interface GetusersResponse {
   success: boolean;
   data: {
-    items: User[];
+    users: User[];
     count: number;
-    total_count: number;
     page: number;
     limit: number;
+    total_count: number;
   };
   message: string;
 }

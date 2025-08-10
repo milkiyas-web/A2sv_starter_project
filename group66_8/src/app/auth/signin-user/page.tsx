@@ -10,6 +10,7 @@ import { Logo } from "@/lib";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -31,9 +32,11 @@ function SigninUser() {
 
     if (res?.error) {
       setError(res.error);
+      toast.error(res.error || "Sign-in failed");
       console.error("Sign-in error:", res.error);
     } else {
       const session = await getSession();
+      toast.success("Signed in successfully");
       if (session?.role === "applicant") {
         router.push("/dashboard/applicant");
       } else if (session?.role === "manager") {
@@ -88,7 +91,9 @@ function SigninUser() {
               <span>Remember me</span>
             </label>
             <span className="text-[#4F46E5] cursor-pointer">
-              <Link href="/auth/forgot-password">Forgot your password?</Link>
+              <Link href="/auth/forgot-password">
+                Forgot your password?
+              </Link>
             </span>
           </div>
           <Button

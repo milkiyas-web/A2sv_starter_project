@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 export default function CreateUserPage() {
     const [formData, setFormData] = useState({
@@ -28,6 +29,7 @@ export default function CreateUserPage() {
             [field]: value
         }));
 
+        // Clear error when user starts typing
         if (errors[field as keyof typeof errors]) {
             setErrors(prev => ({
                 ...prev,
@@ -68,11 +70,46 @@ export default function CreateUserPage() {
         return !Object.values(newErrors).some(error => error !== '');
     };
 
-    const handleSaveUser = () => {
-        if (validateForm()) {
-            console.log('User data:', formData);
-            // Here you would typically make an API call to save the user
-            alert('User created successfully!');
+    const handleSaveUser = async () => {
+        if (!validateForm()) return;
+
+        try {
+
+            const sessionRes = await fetch('/api/auth/session');
+            const session = await sessionRes.json();
+
+            if (!session?.user) {
+                throw new Error('Not authenticated');
+            }
+
+            const res = await fetch('/api/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${session.accessToken}`
+                },
+                body: JSON.stringify({
+                    full_name: formData.fullName,
+                    email: formData.email,
+                    password: formData.password,
+                    role: formData.role
+                }),
+            });
+
+            if (!res.ok) {
+                const result = await res.json();
+                throw new Error(result.message || 'Failed to create user');
+            }
+
+            const result = await res.json();
+            toast.success('User created successfully!');
+            handleCancel();
+        } catch (err: any) {
+            if (err?.message?.toLowerCase().includes('not authenticated')) {
+                toast.error('You must be signed in to perform this action.');
+            } else {
+                toast.error(err?.message || 'An unexpected error occurred');
+            }
         }
     };
 
@@ -176,8 +213,6 @@ export default function CreateUserPage() {
                                         <SelectItem value="applicant">Applicant</SelectItem>
                                         <SelectItem value="manager">Manager</SelectItem>
                                         <SelectItem value="admin">Admin</SelectItem>
-                                        <SelectItem value="hr">Reviewer</SelectItem>
-                                        <SelectItem value="employee">Employee</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 {errors.role && (
@@ -199,7 +234,7 @@ export default function CreateUserPage() {
                             <Button
                                 type="button"
                                 onClick={handleSaveUser}
-                                className="px-6 py-2 h-10 bg-blue-600 hover:bg-blue-700 text-white"
+                                className="px-6 py-2 h-10 bg-[#4F46E5] hover:bg-blue-700 text-white"
                             >
                                 Save User
                             </Button>

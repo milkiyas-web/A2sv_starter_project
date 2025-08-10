@@ -7,11 +7,12 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
-import logo from "../../../../public/logo-blue.svg.png";
+import { Logo } from "@/lib";
+
 
 const signUpSchema = z
   .object({
@@ -97,9 +98,7 @@ export default function RoleSignUpPage() {
         }, 2000);
       }
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "An unexpected error occurred"
-      );
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
       console.error("Registration error:", error);
     }
   };
@@ -108,7 +107,7 @@ export default function RoleSignUpPage() {
     <Card className="w-full border-0 max-w-md p-8 bg-white shadow-md">
       <div className="text-center mb-8">
         <div className="flex justify-center">
-          <Image src={logo} alt="A2SV Logo" className="m-2" priority />
+          <Image src={Logo} alt="A2SV Logo" className="m-2" priority />
         </div>
         <h2 className="text-lg font-extrabold">Create a new account</h2>
         <p className="text-sm text-gray-600 mt-1">
@@ -127,9 +126,8 @@ export default function RoleSignUpPage() {
           <Input
             placeholder="Full name"
             {...register("fullName")}
-            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-              errors.fullName ? "border-red-500" : ""
-            }`}
+            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.fullName ? "border-red-500" : ""
+              }`}
             aria-invalid={errors.fullName ? "true" : "false"}
           />
           {errors.fullName && (
@@ -152,9 +150,8 @@ export default function RoleSignUpPage() {
               register("email").ref(e);
               emailRef.current = e;
             }}
-            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-              errors.email ? "border-red-500" : ""
-            }`}
+            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.email ? "border-red-500" : ""
+              }`}
             aria-invalid={errors.email ? "true" : "false"}
           />
           {errors.email && (
@@ -173,9 +170,8 @@ export default function RoleSignUpPage() {
             type="password"
             placeholder="Password"
             {...register("password")}
-            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-              errors.password ? "border-red-500" : ""
-            }`}
+            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.password ? "border-red-500" : ""
+              }`}
             aria-invalid={errors.password ? "true" : "false"}
           />
           {errors.password && (
@@ -194,9 +190,8 @@ export default function RoleSignUpPage() {
             type="password"
             placeholder="Confirm your Password"
             {...register("confirmPassword")}
-            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${
-              errors.confirmPassword ? "border-red-500" : ""
-            }`}
+            className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.confirmPassword ? "border-red-500" : ""
+              }`}
             aria-invalid={errors.confirmPassword ? "true" : "false"}
           />
           {errors.confirmPassword && (

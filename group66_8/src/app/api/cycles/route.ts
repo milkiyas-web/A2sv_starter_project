@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { Options } from "../auth/[...nextauth]/options";
@@ -15,7 +14,7 @@ export async function GET(req: NextRequest) {
   const limit = searchParams.get("limit") ?? "10";
 
   const backendRes = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/admin/users?page=${page}&limit=${limit}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/cycles?page=${page}&limit=${limit}`,
     {
       headers: {
         Authorization: `Bearer ${session.accessToken}`,

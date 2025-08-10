@@ -7,12 +7,14 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { Logo } from "@/lib";
+import { toast } from "sonner";
 
 function SigninAdmin() {
   const { register, handleSubmit, formState } = useForm<User>();
-  const { errors } = formState;
+  const { errors, isSubmitting } = formState;
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -29,8 +31,10 @@ function SigninAdmin() {
 
     if (res?.error) {
       setError(res.error);
+      toast.error(res.error || "Sign-in failed");
       console.error("Sign-in error:", res.error);
     } else {
+      toast.success("Signed in successfully");
       await getSession();
       router.refresh();
 
@@ -86,8 +90,17 @@ function SigninAdmin() {
             type="submit"
             className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
           >
-            <FaLock />
-            <span>Sign in</span>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Signing in...</span>
+              </>
+            ) : (
+              <>
+                <FaLock />
+                <span>Sign in</span>
+              </>
+            )}
           </Button>
         </form>
       </div>

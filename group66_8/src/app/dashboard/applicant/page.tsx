@@ -11,10 +11,26 @@ import { Progress } from "@/components/ui/progress";
 import React from "react";
 import Check from "./icons/Check";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 const page = () => {
   const router = useRouter();
+  const { data: session } = useSession();
+
+  const formSteps = useSelector((s: RootState) => s.application?.formSteps);
+  const resumeStatus = useSelector((s: RootState) => s.application?.checklist.resume);
+
+  const hasAccount = !!session?.user;
+  const personalDone = formSteps?.personal === "completed";
+  const codingDone = formSteps?.coding === "completed";
+  const essayDone = formSteps?.essay === "completed";
+  const resumeDone = resumeStatus === "completed";
+
+  const green = "text-green-600";
+  const gray = "text-gray-300";
 
   const userName = "John";
   const percentComplete = 75;
@@ -117,23 +133,33 @@ const page = () => {
               </CardTitle>
               <CardDescription className="flex flex-1 flex-col justify-between">
                 <div className="flex items-center">
-                  <Check />
+                  <span className={hasAccount ? green : gray}>
+                    <Check />
+                  </span>
                   <p className="pl-2">Create an Account</p>
                 </div>
                 <div className="flex items-center">
-                  <Check />
+                  <span className={personalDone ? green : gray}>
+                    <Check />
+                  </span>
                   <p className="pl-2">Fill Personal information</p>
                 </div>
                 <div className="flex items-center">
-                  <Check />
+                  <span className={codingDone ? green : gray}>
+                    <Check />
+                  </span>
                   <p className="pl-2">Submit Coding Profiles</p>
                 </div>
                 <div className="flex items-center">
-                  <Check />
+                  <span className={essayDone ? green : gray}>
+                    <Check />
+                  </span>
                   <p className="pl-2">Write Essays</p>
                 </div>
                 <div className="flex items-center">
-                  <Check />
+                  <span className={resumeDone ? green : gray}>
+                    <Check />
+                  </span>
                   <p className="pl-2">Upload Resume</p>
                 </div>
               </CardDescription>
