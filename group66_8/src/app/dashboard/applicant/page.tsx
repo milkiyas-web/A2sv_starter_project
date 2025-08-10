@@ -32,8 +32,24 @@ const page = () => {
   const green = "text-green-600";
   const gray = "text-gray-300";
 
-  const userName = "John";
-  const percentComplete = 75;
+  const profileCompletion = useSelector(
+    (s: RootState) => s.application?.profileCompletion
+  );
+  const userName =
+    (session?.user as any)?.name ??
+    (session?.user as any)?.email?.split("@")[0] ??
+    "Applicant";
+  const percentComplete =
+    typeof profileCompletion === "number" && profileCompletion > 0
+      ? profileCompletion
+      : Math.round(
+        ((personalDone ? 1 : 0) +
+          (codingDone ? 1 : 0) +
+          (essayDone ? 1 : 0) +
+          (resumeDone ? 1 : 0)) /
+        4 *
+        100
+      );
   return (
     <div className="w-[1280px] m-auto">
       <div>

@@ -43,7 +43,7 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
       accessTokenExpires:
         Date.now() +
         (token.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000),
-      error: "RefreshAccessTokenError",
+      // keep the same refresh token, do NOT set error on success
     };
   } catch (error) {
     console.error("🔴 Error refreshing access token:", error);

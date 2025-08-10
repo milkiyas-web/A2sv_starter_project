@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/lib';
 import { Menu, X } from 'lucide-react'
+import { signOut } from 'next-auth/react'
 const ApplicantNav = () => {
     const path = usePathname()
     const [isOpen, setIsOpen] = useState(false)
@@ -30,16 +31,26 @@ const ApplicantNav = () => {
 
                 <div className='hidden md:flex gap-6'>
                     {applicantLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className={`relative px-2 py-1 hover:text-oxford-blue ${path.startsWith(link.name) ? "text-purple-light " : "text-pale-sky"}`}
-                        >
-                            {link.name}
-                            {path.startsWith(link.name) && (
-                                <span className='bg-purple-light absolute -bottom-1 left-0 right-0 h-0.5 rounded' />
-                            )}
-                        </Link>
+                        link.name.toLowerCase() === 'logout' ? (
+                            <button
+                                key={link.name}
+                                onClick={() => signOut({ callbackUrl: '/' })}
+                                className='relative px-2 py-1 text-left hover:text-oxford-blue text-pale-sky'
+                            >
+                                {link.name}
+                            </button>
+                        ) : (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className={`relative px-2 py-1 hover:text-oxford-blue ${path.startsWith(link.name) ? "text-purple-light " : "text-pale-sky"}`}
+                            >
+                                {link.name}
+                                {path.startsWith(link.name) && (
+                                    <span className='bg-purple-light absolute -bottom-1 left-0 right-0 h-0.5 rounded' />
+                                )}
+                            </Link>
+                        )
                     ))}
                 </div>
 
@@ -59,13 +70,23 @@ const ApplicantNav = () => {
                     <div className='px-4 py-3 space-y-1'>
                         <Link href="/dashboard/applicant/in-progress" className='block px-2 py-2 rounded hover:bg-gray-50'>Dashboard</Link>
                         {applicantLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={`block px-2 py-2 rounded hover:bg-gray-50 ${path.startsWith(link.name) ? "text-purple-light" : "text-pale-sky"}`}
-                            >
-                                {link.name}
-                            </Link>
+                            link.name.toLowerCase() === 'logout' ? (
+                                <button
+                                    key={link.name}
+                                    onClick={() => signOut({ callbackUrl: '/' })}
+                                    className='block w-full text-left px-2 py-2 rounded hover:bg-gray-50 text-pale-sky'
+                                >
+                                    {link.name}
+                                </button>
+                            ) : (
+                                <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    className={`block px-2 py-2 rounded hover:bg-gray-50 ${path.startsWith(link.name) ? "text-purple-light" : "text-pale-sky"}`}
+                                >
+                                    {link.name}
+                                </Link>
+                            )
                         ))}
                     </div>
                 </div>

@@ -56,7 +56,7 @@ export const BaseFooter = ({
                                 </h3>
                                 <ul className="space-y-2">
                                     {links.map((link) => (
-                                        <li key={link.href}>
+                                        <li key={`${section}-${link.label}`}>
                                             <Link href={link.href}>
                                                 <span className="text-sm text-gray-400 hover:text-white cursor-pointer">
                                                     {link.label}

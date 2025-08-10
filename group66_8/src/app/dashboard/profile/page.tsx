@@ -8,6 +8,7 @@ import background from "../../../../public/background.svg";
 import profile from "../../../../public/profile.svg";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 type User = {
   success: boolean;
@@ -39,6 +40,7 @@ function UserProfile() {
   const [formError, setFormError] = useState<string | null>(null);
   const [profileFormError, setProfileFormError] = useState<string | null>(null);
   const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [isFetchingProfile, setIsFetchingProfile] = useState(true);
 
   const {
     register: registerPassword,
@@ -59,8 +61,10 @@ function UserProfile() {
     }
 
     const fetchProfile = async () => {
+      setIsFetchingProfile(true);
       if (status !== "authenticated" || !session?.accessToken) {
         setError("You must be logged in to view your profile.");
+        setIsFetchingProfile(false);
         return;
       }
 
@@ -88,6 +92,8 @@ function UserProfile() {
       } catch (e: any) {
         setError("An error occurred while fetching your profile");
         console.error(e, "Fetch error:");
+      } finally {
+        setIsFetchingProfile(false);
       }
     };
 
@@ -167,8 +173,12 @@ function UserProfile() {
     }
   };
 
-  if (status === "loading") {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (status === "loading" || isFetchingProfile) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#4F46E5]" />
+      </div>
+    );
   }
 
   if (status !== "authenticated" || error) {
