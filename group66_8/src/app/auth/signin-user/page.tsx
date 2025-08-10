@@ -36,13 +36,17 @@ function SigninUser() {
       console.error("Sign-in error:", res.error);
     } else {
       const session = await getSession();
-      toast.success("Signed in successfully");
-      if (session?.role === "applicant") {
-        router.push("/dashboard/applicant");
-      } else if (session?.role === "manager") {
-        router.push("/dashboard/manager");
-      } else if (session?.role === "reviewer") {
-        router.push("/dashboard/reviewer");
+      if (session?.role === "admin") {
+        toast.success("Unauthorized Access!");
+      } else {
+        toast.success("Signed in successfully");
+        if (session?.role === "applicant") {
+          router.push("/dashboard/applicant");
+        } else if (session?.role === "manager") {
+          router.push("/dashboard/manager");
+        } else if (session?.role === "reviewer") {
+          router.push("/dashboard/reviewer");
+        }
       }
     }
   };
@@ -91,9 +95,7 @@ function SigninUser() {
               <span>Remember me</span>
             </label>
             <span className="text-[#4F46E5] cursor-pointer">
-              <Link href="/auth/forgot-password">
-                Forgot your password?
-              </Link>
+              <Link href="/auth/forgot-password">Forgot your password?</Link>
             </span>
           </div>
           <Button
