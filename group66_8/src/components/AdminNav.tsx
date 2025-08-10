@@ -6,8 +6,23 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/lib';
 import { Menu, X } from 'lucide-react'
+import { signOut, useSession } from 'next-auth/react'
 const AdminNav = () => {
     const path = usePathname()
+    const { data: session } = useSession()
+    const role = (session as any)?.role || (session?.user as any)?.role
+    const profileHref = (() => {
+        switch ((role || '').toLowerCase()) {
+            case 'admin':
+            case 'user':
+            case 'applicant':
+            case 'manager':
+            case 'reviewer':
+                return '/dashboard/profile'
+            default:
+                return '/dashboard/profile'
+        }
+    })()
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => setIsOpen(false), [path])
@@ -40,9 +55,9 @@ const AdminNav = () => {
                 </div>
 
                 <div className='hidden md:flex items-center gap-4'>
-                    <Link href="/" className='text-sm hover:underline'>Your Profile</Link>
+                    <Link href={profileHref} className='text-sm hover:underline'>Your Profile</Link>
                     <div className='text-sm'>Admin User</div>
-                    <button>Logout</button>
+                    <button onClick={() => signOut({ callbackUrl: '/' })}>Logout</button>
                 </div>
 
                 <button
@@ -70,9 +85,9 @@ const AdminNav = () => {
                         ))}
                         <div className='border-t my-2' />
                         <div className='flex flex-col gap-1 px-2'>
-                            <Link href='/' className='py-2 text-sm hover:underline'>Your Profile</Link>
+                            <Link href={profileHref} className='py-2 text-sm hover:underline'>Your Profile</Link>
                             <div className='py-2 text-sm'>Admin User</div>
-                            <button className='py-2 text-left'>Logout</button>
+                            <button className='py-2 text-left' onClick={() => signOut({ callbackUrl: '/' })}>Logout</button>
                         </div>
                     </div>
                 </div>

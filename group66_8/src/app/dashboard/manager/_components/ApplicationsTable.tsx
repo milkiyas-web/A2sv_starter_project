@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { toast } from "react-hot-toast";
@@ -277,15 +277,14 @@ export default function ApplicationsTable({
               </TableCell>
               <TableCell className="text-left">
                 <span
-                  className={`px-2 py-1 rounded text-sm capitalize ${
-                    application.status === "pending review"
-                      ? "bg-green-50 text-green-700"
-                      : application.status === "interview"
+                  className={`px-2 py-1 rounded text-sm capitalize ${application.status === "pending review"
+                    ? "bg-green-50 text-green-700"
+                    : application.status === "interview"
                       ? "bg-yellow-50 text-yellow-700"
                       : application.status === "Accepted"
-                      ? "bg-purple-50 text-purple-700"
-                      : "bg-gray-100 text-gray-600"
-                  }`}
+                        ? "bg-purple-50 text-purple-700"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
                 >
                   {application.status.replace("_", " ")}
                 </span>
@@ -392,7 +391,7 @@ export default function ApplicationsTable({
                                   }}
                                 >
                                   {isLoadingReviewers ? (
-                                    <span>Loading...</span>
+                                    <Loader2 className="h-4 w-4 animate-spin" />
                                   ) : (
                                     <span>Load More</span>
                                   )}
