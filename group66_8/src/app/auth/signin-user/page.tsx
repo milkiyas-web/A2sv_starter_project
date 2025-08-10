@@ -88,14 +88,12 @@ function SigninUser() {
               <span>Remember me</span>
             </label>
             <span className="text-[#4F46E5] cursor-pointer">
-              <Link href="/auth/forgot-password">
-              Forgot your password?
-              </Link>
+              <Link href="/auth/forgot-password">Forgot your password?</Link>
             </span>
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
           >
             <FaLock />
             <span>Sign in</span>

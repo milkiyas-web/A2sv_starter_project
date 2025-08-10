@@ -3,7 +3,7 @@ import { User } from "@/types/globaltype";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { getSession, signIn } from "next-auth/react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaLock } from "react-icons/fa";
@@ -32,7 +32,7 @@ function SigninAdmin() {
       console.error("Sign-in error:", res.error);
     } else {
       await getSession();
-      router.refresh()
+      router.refresh();
 
       router.push("/dashboard/admin");
     }
@@ -81,11 +81,10 @@ function SigninAdmin() {
               />
               <span>Remember me</span>
             </label>
-            
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
           >
             <FaLock />
             <span>Sign in</span>
