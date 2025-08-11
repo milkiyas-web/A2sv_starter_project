@@ -42,8 +42,7 @@ const refreshToken = async (token: ExtendedToken): Promise<ExtendedToken> => {
       accessToken: hold.data.access,
       accessTokenExpires:
         Date.now() +
-        (token.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000),
-      // keep the same refresh token, do NOT set error on success
+        (token.rememberme ? 7 * 24 * 60 * 60 * 1000 : 10 * 60 * 1000),
     };
   } catch (error) {
     console.error("🔴 Error refreshing access token:", error);
@@ -124,13 +123,13 @@ export const Options = {
         (token as any).rememberme = u.rememberme;
         (token as any).accessTokenExpires =
           Date.now() +
-          (u.rememberme ? 7 * 24 * 60 * 60 * 1000 : 15 * 60 * 1000);
+          (u.rememberme ? 7 * 24 * 60 * 60 * 1000 : 10 * 60 * 1000);
         return token;
       }
 
       if (
         (token as any).accessTokenExpires &&
-        Date.now() >= (token as any).accessTokenExpires - 60 * 1000
+        Date.now() >= (token as any).accessTokenExpires - 5 * 60 * 1000
       ) {
         return await refreshToken(token as ExtendedToken);
       }
@@ -141,7 +140,7 @@ export const Options = {
       session.refreshToken = token.refreshToken;
       session.role = token.role;
       session.accessTokenExpires = token.accessTokenExpires;
-      session.authError = (token as ExtendedToken).error; // use authError instead of error
+      session.authError = (token as ExtendedToken).error; 
       return session;
     },
   },
