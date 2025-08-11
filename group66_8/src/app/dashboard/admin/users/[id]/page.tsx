@@ -25,7 +25,7 @@ import {
 import { Loader2 } from "lucide-react";
 
 // Define valid roles according to your backend
-const VALID_ROLES = ["Applicant", "Manager", "Admin", "Reviewer"];
+const VALID_ROLES = ["applicant", "manager", "admin", "reviewer"];
 
 export default function EditUserPage() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function EditUserPage() {
     fullName: "",
     email: "",
     password: "",
-    role: "Reviewer",
+    role: "",
     isActive: true,
   });
 
@@ -171,7 +171,7 @@ export default function EditUserPage() {
 
       if (response.success) {
         toast.success(response.message || "User updated successfully");
-        router.push("/users");
+        router.push("/dashboard/admin/users");
       } else {
         throw new Error(response.message || "Failed to update user");
       }

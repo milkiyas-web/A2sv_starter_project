@@ -37,6 +37,26 @@ const page = () => {
   const userName = "John";
   const percentComplete = 75;
 
+<<<<<<< HEAD
+  const profileCompletion = useSelector(
+    (s: RootState) => s.application?.profileCompletion
+  );
+  const userName =
+    (session?.user as any)?.name ??
+    (session?.user as any)?.email?.split("@")[0] ??
+    "Applicant";
+  console.log(session.user)
+  const percentComplete =
+    typeof profileCompletion === "number" && profileCompletion > 0
+      ? profileCompletion
+      : Math.round(
+        ((personalDone ? 1 : 0) +
+          (codingDone ? 1 : 0) +
+          (essayDone ? 1 : 0) +
+          (resumeDone ? 1 : 0)) /
+        4 *
+        100
+=======
   const handleSubmit = async () => {
     const isValid = validateStep(step);
     if (!isValid) return;
@@ -69,6 +89,7 @@ const page = () => {
                 : "",
           },
         }
+>>>>>>> 855722e4636bc0f5f8c378c013683555baf6624c
       );
 
       if (res.status === 409) {

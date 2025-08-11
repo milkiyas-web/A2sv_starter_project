@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useGetusersQuery } from "@/lib/redux/api/userApi";
 import { User } from "@/lib/redux/types/users";
@@ -20,7 +20,9 @@ export default function UsersPage() {
   });
   const [searchTerm, setSearchTerm] = useState("");
   const { data: session } = useSession();
-
+  useEffect(() => {
+    refetch();
+  }, []);
   const redirectToSignIn = () => {
     toast.error("Session expired. Please sign in again.");
     router.push("/auth/signin-admin");
@@ -94,6 +96,7 @@ export default function UsersPage() {
     user.full_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -131,11 +134,10 @@ export default function UsersPage() {
         <button
           key={page}
           onClick={() => setCurrentPage(page as number)}
-          className={`px-3 mx-1 py-1 rounded text-gray-500 ${
-            currentPage === page
-              ? "bg-indigo-300 outline outline-indigo-600"
-              : "outline outline-gray-500"
-          }`}
+          className={`px-3 mx-1 py-1 rounded text-gray-500 ${currentPage === page
+            ? "bg-indigo-300 outline outline-indigo-600"
+            : "outline outline-gray-500"
+            }`}
         >
           {page}
         </button>
@@ -152,16 +154,17 @@ export default function UsersPage() {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center my-4">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center my-4 gap-3">
         <div>
-          <h1 className="text-2xl font-bold">User Management</h1>
-          <p className="text-gray-500">
+          <h1 className="text-xl sm:text-2xl font-bold">User Management</h1>
+          <p className="text-gray-500 text-sm sm:text-base">
             Administer and manage all users on the platform
           </p>
         </div>
         <Button
-          className="bg-indigo-600"
+          className="bg-indigo-600 w-full sm:w-auto"
           onClick={() => {
             if (!session?.accessToken) {
               redirectToSignIn();
@@ -174,8 +177,9 @@ export default function UsersPage() {
         </Button>
       </div>
 
+      {/* Search */}
       <div className="p-3 my-3 border shadow-lg">
-        <div className="flex justify-between gap-3 items-center">
+        <div className="flex flex-col sm:flex-row justify-between gap-3 items-center">
           <div className="relative w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
             <input
@@ -186,10 +190,13 @@ export default function UsersPage() {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button className="bg-indigo-200 text-black">All Roles</Button>
+          <Button className="bg-indigo-200 text-black w-full sm:w-auto">
+            All Roles
+          </Button>
         </div>
       </div>
 
+      {/* Table header (hidden on mobile) */}
       <div className="hidden md:grid grid-cols-[2fr_1fr_1fr_1fr] p-3 text-gray-500">
         <p>Name</p>
         <p>Role</p>
@@ -197,54 +204,71 @@ export default function UsersPage() {
         <p></p>
       </div>
 
-      <ul className="shadow-lg">
+      {/* User list */}
+      <ul className="shadow-lg divide-y">
         {isLoading
           ? Array.from({ length: 5 }).map((_, idx) => (
-              <li
-                key={idx}
-                className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] items-start md:items-center p-3 border"
-              >
-                <div className="flex items-start md:items-center gap-3">
-                  <Skeleton className="h-10 w-10 rounded-full" />
-                  <div className="w-full max-w-[180px] space-y-2">
-                    <Skeleton className="h-4 w-3/4" />
-                  </div>
+            <li
+              key={idx}
+              className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-2 p-3"
+            >
+              <div className="flex items-start md:items-center gap-3">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="w-full max-w-[180px] space-y-2">
+                  <Skeleton className="h-4 w-3/4" />
                 </div>
-              </li>
-            ))
+              </div>
+            </li>
+          ))
           : filteredUsers.map((user: User) => (
-              <li
-                key={user.id}
-                className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] items-start md:items-center p-3 border"
-              >
-                <div className="flex items-start md:items-center gap-3">
-                  <Avatar className="w-10 h-10">
-                    <AvatarFallback>
-                      {getInitialsFromFullName(user.full_name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="overflow-hidden">
+            <li
+              key={user.id}
+              className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr_1fr] gap-2 p-3"
+            >
+              {/* Avatar + Name + Role (flexed on mobile) */}
+              <div className="flex items-start md:items-center gap-3">
+                <Avatar className="w-10 h-10">
+                  <AvatarFallback>
+                    {getInitialsFromFullName(user.full_name)}
+                  </AvatarFallback>
+                </Avatar>
+
+                <div className="overflow-hidden">
+                  {/* Name + Role side-by-side on mobile */}
+                  <div className="flex flex-wrap items-center gap-2">
                     <p className="font-semibold truncate max-w-[180px]">
                       {user.full_name}
                     </p>
-                    <p className="text-sm text-gray-600 truncate max-w-[180px]">
-                      {user.email}
+                    <p className="text-gray-500 text-xs md:hidden">
+                      {user.role}
                     </p>
                   </div>
+
+                  <p className="text-sm text-gray-600 truncate max-w-[180px]">
+                    {user.email}
+                  </p>
                 </div>
-                <p className="text-gray-500 text-sm md:text-base">
-                  {user.role}
-                </p>
+              </div>
+
+              {/* Role (hidden on mobile) */}
+              <p className="text-gray-500 text-sm md:text-base hidden md:block">
+                {user.role}
+              </p>
+
+              {/* Mobile: Status + Actions together */}
+              <div className="flex justify-between md:block">
+                {/* Status */}
                 <p
-                  className={`text-sm md:text-base inline-flex w-16 items-center px-2 py-1 rounded-full font-medium ${
-                    user.is_active
-                      ? "bg-blue-100 text-blue-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
+                  className={`text-sm md:text-base inline-flex w-20 items-center px-2 py-1 rounded-full font-medium ${user.is_active
+                    ? "bg-blue-100 text-blue-700"
+                    : "bg-yellow-100 text-yellow-700"
+                    }`}
                 >
                   {user.is_active ? "Active" : "Inactive"}
                 </p>
-                <div className="flex gap-3 justify-start md:justify-end text-sm">
+
+                {/* Actions */}
+                <div className="flex gap-3 md:justify-end">
                   <button
                     className="text-indigo-600"
                     onClick={() => {
@@ -264,12 +288,18 @@ export default function UsersPage() {
                     Delete
                   </button>
                 </div>
-              </li>
-            ))}
+              </div>
+            </li>
+
+
+          ))}
       </ul>
-      <div className="flex justify-between m-4">
-        <p className="text-gray-500">
-          Showing {currentPage * 5 - 4} to {currentPage * 5} of {totalUsers}
+
+      {/* Pagination */}
+      <div className="flex flex-col sm:flex-row justify-between m-4 gap-3 items-center">
+        <p className="text-gray-500 text-sm sm:text-base">
+          Showing {currentPage * 5 - 4} to {Math.min(currentPage * 5, totalUsers)} of{" "}
+          {totalUsers}
         </p>
         <div className="flex shadow-lg">
           <button

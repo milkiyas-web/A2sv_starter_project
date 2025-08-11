@@ -22,7 +22,7 @@ const bigCardData = [
         title: "Recent Admin Activity",
         description: "Create and manage application cycles.",
         footer: "New User Jane R. created.",
-        link: "/dashboardanalytics"
+        link: ""
     }
 ]
 
