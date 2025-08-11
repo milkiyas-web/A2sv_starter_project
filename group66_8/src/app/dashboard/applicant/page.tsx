@@ -39,6 +39,7 @@ const page = () => {
     (session?.user as any)?.name ??
     (session?.user as any)?.email?.split("@")[0] ??
     "Applicant";
+  console.log(session.user)
   const percentComplete =
     typeof profileCompletion === "number" && profileCompletion > 0
       ? profileCompletion

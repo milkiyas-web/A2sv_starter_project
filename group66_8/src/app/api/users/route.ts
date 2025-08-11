@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/users`)
+  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/users`);
   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/users`, {
     method: "POST",
     headers: {

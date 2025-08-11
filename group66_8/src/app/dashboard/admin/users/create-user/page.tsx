@@ -7,8 +7,10 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 export default function CreateUserPage() {
+    const router = useRouter()
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -82,7 +84,7 @@ export default function CreateUserPage() {
                 throw new Error('Not authenticated');
             }
 
-            const res = await fetch('/api/users', {
+            const res = await fetch('https://a2sv-application-platform-backend-team8.onrender.com/admin/users', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -103,6 +105,7 @@ export default function CreateUserPage() {
 
             const result = await res.json();
             toast.success('User created successfully!');
+            router.push("/dashboard/admin/users")
             handleCancel();
         } catch (err: any) {
             if (err?.message?.toLowerCase().includes('not authenticated')) {
@@ -213,6 +216,7 @@ export default function CreateUserPage() {
                                         <SelectItem value="applicant">Applicant</SelectItem>
                                         <SelectItem value="manager">Manager</SelectItem>
                                         <SelectItem value="admin">Admin</SelectItem>
+                                        <SelectItem value="reviewer">Reviewer</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 {errors.role && (
