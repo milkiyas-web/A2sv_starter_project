@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Search, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 import { useToast } from "@/components/ui/use-toast";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import ApplicantDetailsReview from "./Review";
