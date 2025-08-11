@@ -20,9 +20,9 @@ export default function UsersPage() {
   });
   const [searchTerm, setSearchTerm] = useState("");
   const { data: session } = useSession();
-  useEffect(() => {
-    refetch();
-  }, []);
+  // useEffect(() => {
+  //   refetch();
+  // }, []);
   const redirectToSignIn = () => {
     toast.error("Session expired. Please sign in again.");
     router.push("/auth/signin-admin");

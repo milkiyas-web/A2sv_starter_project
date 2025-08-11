@@ -14,7 +14,6 @@ import Check from "./icons/Check";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/redux/store";
-import Link from "next/link";
 
 const page = () => {
   const router = useRouter();
@@ -85,7 +84,7 @@ const page = () => {
                 </div>
                 <CardFooter className="p-0">
                   <div className="flex items-center font-semibold ">
-                    <Link href="/dashboard/profile">Go to profile</Link>
+                    Go to profile
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
