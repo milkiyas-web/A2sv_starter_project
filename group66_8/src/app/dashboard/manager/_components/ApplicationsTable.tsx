@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Search, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
+import { toast } from "sonner";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import ApplicantDetailsReview from "./Review";
 import { toast } from "sonner";
@@ -152,7 +153,7 @@ export default function ApplicationsTable({
     } catch (err) {
       console.error("Error in handleViewDetails:", err);
 
-      toast.error("Error occured")
+      toast.error( "Failed to load details")
     }
   };
 
@@ -185,6 +186,8 @@ export default function ApplicationsTable({
     } catch (err) {
       console.error("Error in handleViewReview:", err);
       toast.error("error")
+      toast.error("Failed to load review")
+      
     }
   };
 
@@ -195,7 +198,7 @@ export default function ApplicationsTable({
       setIsLoadingReviewers(true);
       await onReviewersPageChange(reviewersPagination.page + 1);
     } catch (error: any) {
-      toast.error("error occured")
+      toast.error("Failed to load more reviewers")
     } finally {
       setIsLoadingReviewers(false);
     }

@@ -18,7 +18,7 @@ export default function RootLayout({
       >
         <ApplicantNav />
         {children}
-        <BaseFooter />
+        {/*<BaseFooter />*/}
       </body>
     </html>
   );
