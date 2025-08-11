@@ -25,6 +25,13 @@ const LogoTicker = () => {
                             repeatType: "loop"
                         }}
                     >
+                        {/* <Image
+                            src={google}
+                            alt="Acme Logo"
+                            className='h-8 w-auto'
+                            width={12}
+                            height={12}
+                        /> */}
                         <Image
                             src={amazone}
                             alt="Acme Logo"
@@ -39,20 +46,8 @@ const LogoTicker = () => {
                             width={12}
                             height={12}
                         />
-                        <Image
-                            src={google}
-                            alt="echo Logo"
-                            className='h-8 w-auto'
-                            width={12}
-                            height={12}
-                        />
-                        <Image
-                            src={apexLogo}
-                            alt="apex Logo"
-                            className='h-8 w-auto'
-                            width={12}
-                            height={12}
-                        />
+
+
                         <Image
                             src={celestialLogo}
                             alt="celestial Logo"
@@ -60,13 +55,7 @@ const LogoTicker = () => {
                             width={12}
                             height={12}
                         />
-                        <Image
-                            src={google}
-                            alt="Acme Logo"
-                            className='h-8 w-auto'
-                            width={12}
-                            height={12}
-                        />
+
                         <Image
                             src={amazone}
                             alt="Acme Logo"
@@ -75,13 +64,7 @@ const LogoTicker = () => {
                             height={12}
                         />
                         {/*Another set of images for animation*/}
-                        <Image
-                            src={google}
-                            alt="Acme Logo"
-                            className='h-8 w-auto'
-                            width={12}
-                            height={12}
-                        />
+
                         <Image
                             src={quantumLogo}
                             alt="Quantum Logo"
@@ -120,6 +103,13 @@ const LogoTicker = () => {
                         <Image
                             src={amazone}
                             alt="Acme Logo"
+                            className='h-8 w-auto'
+                            width={12}
+                            height={12}
+                        />
+                        <Image
+                            src={apexLogo}
+                            alt="apex Logo"
                             className='h-8 w-auto'
                             width={12}
                             height={12}
