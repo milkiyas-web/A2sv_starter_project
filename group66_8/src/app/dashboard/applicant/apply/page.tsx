@@ -110,7 +110,6 @@ const page = () => {
 
       const result = await res.json();
 
-      // Mark final step and application state as completed in Redux
       dispatch(setFormStepStatus({ step: "essay", status: "completed" }));
       dispatch(completeChecklistItem("resume"));
       dispatch(setApplicationProgress({ submitted: "completed" }));
