@@ -5,7 +5,7 @@ export type NavLinks = {
 };
 
 export const adminLinks: NavLinks[] = [
-  { name: "Dashboard", href: "/admin/dashboard" },
+  { name: "Dashboard", href: "/dashboard/admin" },
   { name: "Users", href: "/dashboard/admin/users" },
   { name: "Cycles", href: "/dashboard/admin/cycles" },
   { name: "Analytics", href: "/dashboard/admin/dashboardanalytics" },

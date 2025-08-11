@@ -18,6 +18,7 @@ type User = {
     full_name: string;
     email: string;
     role: string;
+    profile_picture_url: string;
   };
   message: string;
 };
@@ -118,8 +119,8 @@ function UserProfile() {
             Authorization: `Bearer ${session?.accessToken}`,
           },
           body: JSON.stringify({
-            currentPassword: formData.current,
-            newPassword: formData.new,
+            old_password: formData.current,
+            new_password: formData.new,
           }),
         }
       );
@@ -205,7 +206,7 @@ function UserProfile() {
           />
           <div className="absolute bottom-0 left-4 sm:left-6 transform translate-y-1/2 flex items-end space-x-4">
             <Image
-              src={profile}
+              src={data?.data?.profile_picture_url || profile}
               alt="Profile"
               width={120}
               height={120}
