@@ -327,20 +327,21 @@ export default function ApplicationDetailsModal({
                     </div>
                     <div className="flex gap-4">
                       <Button
-                        variant="outline"
-                        className="flex-1 bg-red-500 text-white hover:bg-red-600 hover:text-white cursor-pointer"
-                        onClick={() => makeDecision("rejected")}
-                        disabled={isAccepting || isRejecting || isConfirming}
-                      >
-                        {isRejecting ? "Rejecting..." : "Reject"}
-                      </Button>
-                      <Button
-                        className="flex-1 bg-green-600 hover:bg-green-700 cursor-pointer"
+                        className="flex-1 bg-[#4F46E5] cursor-pointer"
                         onClick={() => makeDecision("accepted")}
                         disabled={isAccepting || isRejecting || isConfirming}
                       >
                         {isAccepting ? "Accepting..." : "Accept"}
                       </Button>
+                      <Button
+                        variant="outline"
+                        className="flex-1 bg-black text-white cursor-pointer"
+                        onClick={() => makeDecision("rejected")}
+                        disabled={isAccepting || isRejecting || isConfirming}
+                      >
+                        {isRejecting ? "Rejecting..." : "Reject"}
+                      </Button>
+
                     </div>
                   </div>
                 </div>

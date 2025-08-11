@@ -1,15 +1,18 @@
 "use client";
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { adminLinks, applicantLinks } from './navSchema'
+import { applicantLinks } from './navSchema'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Logo } from '@/lib';
 import { Menu, X } from 'lucide-react'
-import { signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
+
 const ApplicantNav = () => {
     const path = usePathname()
+    const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
+    const userName = session?.user?.name || 'Applicant'
 
     useEffect(() => setIsOpen(false), [path])
 
@@ -52,6 +55,7 @@ const ApplicantNav = () => {
                             </Link>
                         )
                     ))}
+                    <div className='text-sm text-pale-sky'>{userName}</div>
                 </div>
 
                 <button
@@ -88,6 +92,8 @@ const ApplicantNav = () => {
                                 </Link>
                             )
                         ))}
+                        <div className='border-t my-2' />
+                        <div className='px-2 py-2 text-sm text-pale-sky'>{userName}</div>
                     </div>
                 </div>
             )}

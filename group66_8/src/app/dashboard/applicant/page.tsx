@@ -14,11 +14,13 @@ import Check from "./icons/Check";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/lib/redux/store";
+import { useSession } from "next-auth/react";
 
 const page = () => {
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const userName = "John";
+  const userName = session?.user?.name || "Applicant";
   const profileCompletion = useSelector(
     (state: RootState) => state.application.profileCompletion
   );
