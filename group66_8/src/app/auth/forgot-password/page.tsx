@@ -39,7 +39,7 @@ function ForgotPassword() {
         },
         body: JSON.stringify({
           email: data.email,
-          callback_url: process.env.NEXT_PUBLIC_CALLBACK_URL,
+          callback_url: "https://a2sv-starter-project.vercel.app/auth/reset-password",
         })
       })
 
