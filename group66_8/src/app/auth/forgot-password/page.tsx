@@ -78,7 +78,7 @@ function ForgotPassword() {
               If an account exists for {getValues("email")}, you'll receive an email
               with reset instructions.
             </p>
-            <Link href="/auth/signin">
+            <Link href="/auth/signin-user">
               <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                 Back to login
               </Button>
@@ -110,6 +110,7 @@ function ForgotPassword() {
             >
               {isLoading ? "Sending..." : "Send reset link"}
             </Button>
+
 
             <div className="text-center text-sm text-gray-600 mt-4">
               <Link

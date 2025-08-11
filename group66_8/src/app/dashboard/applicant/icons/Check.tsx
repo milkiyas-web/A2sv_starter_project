@@ -1,6 +1,12 @@
 import React from "react";
 
-const Check = () => {
+interface CheckProps {
+  completed?: boolean;
+  className?: string;
+}
+
+const Check: React.FC<CheckProps> = ({ completed = false, className = "" }) => {
+  const colorClass = completed ? "text-green-600" : "text-gray-300";
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,7 +14,8 @@ const Check = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-4"
+      className={`size-4 ${colorClass} ${className}`}
+      aria-hidden
     >
       <path
         strokeLinecap="round"

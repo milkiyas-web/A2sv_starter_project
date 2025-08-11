@@ -33,6 +33,6 @@ export const forgotPasswordLinks: NavLinks[] = [
 
 export const applicantLinks: NavLinks[] = [
   { name: "Your Profile", href: "/dashboard/profile" },
-  { name: "Applicant Name", href: "" },
+  { name: "Applicant", href: "" },
   { name: "Logout", href: "" },
 ];

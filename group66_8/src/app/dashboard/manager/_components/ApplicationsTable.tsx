@@ -12,10 +12,9 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown, Search, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
-import { toast } from "react-hot-toast";
-import { useToast } from "@/components/ui/use-toast";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import ApplicantDetailsReview from "./Review";
+import { toast } from "sonner";
 
 interface Application {
   id: string;
@@ -70,7 +69,6 @@ export default function ApplicationsTable({
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [isLoadingReviewers, setIsLoadingReviewers] = useState(false);
   const [showReviewerSubmenu, setShowReviewerSubmenu] = useState(false);
-  const { toast } = useToast();
   const [menuPosition, setMenuPosition] = useState<{
     top: number;
     right: number;
@@ -154,11 +152,7 @@ export default function ApplicationsTable({
     } catch (err) {
       console.error("Error in handleViewDetails:", err);
 
-      toast({
-        title: "Error!",
-        description: "Failed to load details",
-        variant: "destructive",
-      });
+      toast.error("Error occured")
     }
   };
 
@@ -190,11 +184,7 @@ export default function ApplicationsTable({
       setMenuPosition(null);
     } catch (err) {
       console.error("Error in handleViewReview:", err);
-      toast({
-        title: "Error!",
-        description: "Failed to load review",
-        variant: "destructive",
-      });
+      toast.error("error")
     }
   };
 
@@ -205,11 +195,7 @@ export default function ApplicationsTable({
       setIsLoadingReviewers(true);
       await onReviewersPageChange(reviewersPagination.page + 1);
     } catch (error: any) {
-      toast({
-        title: "Error!",
-        description: "Failed to load more reviewers",
-        variant: "destructive",
-      });
+      toast.error("error occured")
     } finally {
       setIsLoadingReviewers(false);
     }

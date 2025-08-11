@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
-import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface ApplicantDetails {
   id: string;
@@ -67,7 +67,6 @@ export default function ApplicationDetailsModal({
   const [isRejecting, setIsRejecting] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
 
   if (!application) {
     return null;
@@ -121,20 +120,12 @@ export default function ApplicationDetailsModal({
         );
       }
 
-      toast({
-        title: "Success!",
-        description: "Reviewer assigned successfully",
-        variant: "default", // optional, defaults to 'default'
-      });
+      toast.success("Success")
       onStatusChange();
     } catch (err) {
       console.error("Assignment error:", err);
 
-      toast({
-        title: "Error!",
-        description: "Failed to assign reviewer",
-        variant: "destructive",
-      });
+      toast.error("error occured")
     } finally {
       setIsConfirming(false);
     }
@@ -180,20 +171,12 @@ export default function ApplicationDetailsModal({
         );
       }
 
-      toast({
-        title: "Success!",
-        description: `Application ${decision} successfully`,
-        variant: "default", // optional, defaults to 'default'
-      });
+      toast.success("success")
       onStatusChange();
       onClose();
     } catch (err) {
       console.error("Decision error:", err);
-      toast({
-        title: "Error!",
-        description: `Failed to ${decision} application`,
-        variant: "destructive",
-      });
+      toast.error("error occured")
     } finally {
       setIsAccepting(false);
       setIsRejecting(false);
