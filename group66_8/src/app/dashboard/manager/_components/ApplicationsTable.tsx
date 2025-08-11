@@ -196,11 +196,7 @@ export default function ApplicationsTable({
       setIsLoadingReviewers(true);
       await onReviewersPageChange(reviewersPagination.page + 1);
     } catch (error: any) {
-      toast({
-        title: "Error!",
-        description: "Failed to load more reviewers",
-        variant: "destructive",
-      });
+      toast.error("Failed to load more reviewers")
     } finally {
       setIsLoadingReviewers(false);
     }
