@@ -10,6 +10,7 @@ import { Logo } from "@/lib";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 function SigninUser() {
   const { register, handleSubmit, formState } = useForm<User>();
@@ -31,15 +32,21 @@ function SigninUser() {
 
     if (res?.error) {
       setError(res.error);
+      toast.error(res.error || "Sign-in failed");
       console.error("Sign-in error:", res.error);
     } else {
       const session = await getSession();
-      if (session?.role === "applicant") {
-        router.push("/dashboard/applicant");
-      } else if (session?.role === "manager") {
-        router.push("/dashboard/manager");
-      } else if (session?.role === "reviewer") {
-        router.push("/dashboard/reviewer");
+      if (session?.role === "admin") {
+        toast.success("Unauthorized Access!");
+      } else {
+        toast.success("Signed in successfully");
+        if (session?.role === "applicant") {
+          router.push("/dashboard/applicant");
+        } else if (session?.role === "manager") {
+          router.push("/dashboard/manager");
+        } else if (session?.role === "reviewer") {
+          router.push("/dashboard/reviewer");
+        }
       }
     }
   };
@@ -88,14 +95,12 @@ function SigninUser() {
               <span>Remember me</span>
             </label>
             <span className="text-[#4F46E5] cursor-pointer">
-              <Link href="/auth/forgot-password">
-              Forgot your password?
-              </Link>
+              <Link href="/auth/forgot-password">Forgot your password?</Link>
             </span>
           </div>
           <Button
             type="submit"
-            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2"
+            className="w-full bg-[#4F46E5] hover:bg-[#4F46E5] text-white flex items-center justify-center space-x-2 cursor-pointer"
           >
             <FaLock />
             <span>Sign in</span>

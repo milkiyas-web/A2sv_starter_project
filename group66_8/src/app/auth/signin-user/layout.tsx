@@ -1,0 +1,20 @@
+import type { Metadata } from "next";
+import SigninNav from "@/components/SigninNav";
+import { BaseFooter } from "@/components/Footer";
+
+export const metadata: Metadata = {
+    title: "A2SV - Sign In",
+    description: "Sign in to your account",
+};
+
+export default function Layout({ children }: { children: React.ReactNode }) {
+    return (
+        <div className="min-h-screen bg-gray-100">
+            <SigninNav />
+            <main>{children}</main>
+            <BaseFooter />
+        </div>
+    );
+}
+
+

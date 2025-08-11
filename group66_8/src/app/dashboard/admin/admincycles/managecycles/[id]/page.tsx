@@ -4,7 +4,7 @@ import { ncycle } from '@/types/globaltype'
 import { useSession } from 'next-auth/react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { useEffect} from 'react'
+import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 
@@ -13,8 +13,8 @@ export default function Page() {
   const { data: session, status } = useSession()
   const { id } = useParams()
   const router = useRouter()
-  const { toast} = useToast()
-
+  const { toast } = useToast()
+  const [isDeleted, setIsDeleted] = useState(false) 
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -23,35 +23,39 @@ export default function Page() {
   }, [status, router])
 
   useEffect(() => {
-    if (!id) return
+    if (!id || isDeleted) return 
 
     const fetchData = async () => {
-      const res = await fetch(
-        `https://a2sv-application-platform-backend-team8.onrender.com/cycles/${id}`,
-        { headers: { 'Content-Type': 'application/json' } }
-      )
+      try {
+        const res = await fetch(
+          `https://a2sv-application-platform-backend-team8.onrender.com/cycles/${id}`,
+          { headers: { 'Content-Type': 'application/json' } }
+        )
 
-      if (!res.ok) {
-        toast({
-          title: 'Error',
-          description: 'Failed to fetch cycle data',
-          variant: 'destructive'
-        })
-        return
+        if (!res.ok) {
+          toast({
+            title: 'Error',
+            description: 'Failed to fetch cycle data',
+            variant: 'destructive'
+          })
+          return
+        }
+
+        const data = await res.json()
+        const formatted = {
+          ...data,
+          start_date: data.start_date ? data.start_date.split('T')[0] : '',
+          end_date: data.end_date ? data.end_date.split('T')[0] : '',
+        }
+
+        reset(formatted)
+      } catch (error) {
+        console.error(error)
       }
-
-      const data = await res.json()
-      const formatted = {
-        ...data,
-        start_date: data.start_date ? data.start_date.split('T')[0] : '',
-        end_date: data.end_date ? data.end_date.split('T')[0] : '',
-      }
-
-      reset(formatted)
     }
 
     fetchData()
-  }, [id, reset, toast])
+  }, [id, reset, toast, isDeleted])
 
   const onSubmit = async (formData: ncycle) => {
     const res = await fetch(
@@ -80,12 +84,11 @@ export default function Page() {
       title: 'Success',
       description: 'Cycle updated successfully!'
     })
-    
+
     router.push('/dashboard/admin/admincycles')
   }
 
-  
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     const confirmDelete = window.confirm(`Are you sure you want to close the cycle: ${getValues('name')}?`);
     if (!confirmDelete) return;
 
@@ -113,33 +116,26 @@ export default function Page() {
       description: `Cycle "${getValues('name')}" has been closed.`,
       variant: 'default',
     });
+
+    setIsDeleted(true) // 🛑 Prevent refetch
+    router.push('/dashboard/admin/admincycles')
   }
 
   return (
-    <div className="h-screen bg-gray-50 flex flex-col justify-start px-4 py-8 sm:px-6 lg:px-8">
-       
-      <div className="max-w-xl w-full mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-md">
-        <Button
-              type="button"
-              onClick={handleDelete}
-              variant="destructive"
-              className="w-auto py-3 px-6 text-lg rounded-lg cursor-pointer"
-            >
-              Delete Cycle
-            </Button>
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-4">
+    <div className="h-screen bg-gradient-to-br from-indigo-50 via-white to-indigo-100 flex flex-col justify-start px-4 py-8 sm:px-6 lg:px-8">
+      <div className="max-w-xl w-full mx-auto bg-white p-8 sm:p-10 rounded-3xl shadow-lg border border-gray-100">
+        
+        <h2 className="text-3xl sm:text-4xl font-extrabold text-center text-indigo-700 mb-4">
           Manage Cycle
         </h2>
-        <div>
-          
-        </div>
-        <p className="text-center text-gray-600 mb-6">
+
+        <p className="text-center text-gray-500 mb-8">
           Update the cycle details below.
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Cycle Name</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Cycle Name</label>
             <Input
               type="text"
               placeholder="G6 November 2024"
@@ -150,7 +146,7 @@ export default function Page() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">Start Date</label>
             <Input
               type="date"
               className="w-full"
@@ -160,7 +156,7 @@ export default function Page() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">End Date</label>
             <Input
               type="date"
               className="w-full"
@@ -176,7 +172,7 @@ export default function Page() {
           <div className='flex justify-end gap-4'>
             <Button
               type="submit"
-              className="w-auto py-3 text-lg rounded-lg bg-[#4F46E5] cursor-pointer hover:bg-blue-950"
+              className="w-auto py-3 px-6 text-lg rounded-lg bg-indigo-600 cursor-pointer hover:bg-indigo-800 transition-all duration-200"
             >
               Save Changes
             </Button>
@@ -184,12 +180,22 @@ export default function Page() {
             <Button
               type="button"
               onClick={() => router.push('/dashboard/admin/admincycles')}
-              className='w-auto py-3 px-10 text-lg rounded-lg text-black cursor-pointer bg-white border border-black hover:bg-gray-100'
+              className='w-auto py-3 px-10 text-lg rounded-lg text-gray-700 cursor-pointer bg-gray-100 border border-gray-300 hover:bg-gray-200 transition-all duration-200'
             >
               Cancel
             </Button>
+          </div>
 
-           
+ 
+          <div className="pt-8 border-t mt-8">
+            <Button
+              type="button"
+              onClick={handleDelete}
+              variant="destructive"
+              className="w-full py-3 px-6 text-lg rounded-lg cursor-pointer hover:bg-red-700 transition-all duration-200"
+            >
+              Delete Cycle
+            </Button>
           </div>
         </form>
       </div>

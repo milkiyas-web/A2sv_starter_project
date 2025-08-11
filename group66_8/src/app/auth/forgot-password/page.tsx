@@ -32,29 +32,29 @@ function ForgotPassword() {
   const onSubmit = async (data: FormData) => {
     setIsLoading(true);
     try {
-      const res=await fetch("https://a2sv-application-platform-backend-team8.onrender.com/auth/forgot-password",{
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
+      const res = await fetch("https://a2sv-application-platform-backend-team8.onrender.com/auth/forgot-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
         },
-        body:JSON.stringify({
-           email: data.email,
-            callback_url: process.env.NEXT_PUBLIC_CALLBACK_URL,
+        body: JSON.stringify({
+          email: data.email,
+          callback_url: process.env.NEXT_PUBLIC_CALLBACK_URL,
         })
-      } )
+      })
 
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.message || "Failed to send reset link.");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Failed to send reset link.");
+      }
+      toast.success("Reset link sent to your email!");
+      setResetSent(true);
+      //outer.push("/");
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send reset link. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
-    toast.success("Reset link sent to your email!");
-    setResetSent(true);
-    //outer.push("/");
-  } catch (error: any) {
-    toast.error(error.message || "Failed to send reset link. Please try again.");
-  } finally {
-    setIsLoading(false);
-  }
   };
 
   return (
@@ -113,7 +113,7 @@ function ForgotPassword() {
 
             <div className="text-center text-sm text-gray-600 mt-4">
               <Link
-                href="/auth/signin"
+                href="/auth/signin-user"
                 className="text-blue-600 hover:underline"
               >
                 Back to login

@@ -3,6 +3,7 @@ export interface User {
   full_name: string;
   email: string;
   role: string;
+  is_active?: boolean;
 }
 export interface UpdateUserPayload {
   full_name: string;

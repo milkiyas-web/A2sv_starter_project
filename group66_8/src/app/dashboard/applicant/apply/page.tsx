@@ -14,9 +14,29 @@ import {
 import { Progress } from "@/components/ui/progress";
 import React from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import {
+  completeChecklistItem,
+  goToNextFormStep,
+  setApplicationProgress,
+  setFormStepStatus,
+} from "@/lib/redux/slice/applicationSlice";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 
 const page = () => {
   const { data: session } = useSession();
+  const token = session?.accessToken;
+  console.log(token);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  // console.log(token, "valid token");
+  if (!token) {
+    router.push("/auth/signin-user");
+    console.log("token expire");
+  }
 
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
@@ -72,7 +92,7 @@ const page = () => {
       );
 
       if (res.status === 409) {
-        alert(
+        toast.error(
           "You have already submitted an application. Duplicate submissions are not allowed."
         );
         return;
