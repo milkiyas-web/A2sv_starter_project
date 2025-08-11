@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Provider from "@/providers/AuthProvider";
 import { StateProvider } from "@/providers/StateProvider";
-// import { ToastProvider } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/sonner";
 import { Inter } from "next/font/google";
 

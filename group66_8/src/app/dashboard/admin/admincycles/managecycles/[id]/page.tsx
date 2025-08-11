@@ -6,15 +6,16 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useToast } from '@/components/ui/use-toast'
+import { toast } from 'sonner' 
 
 export default function Page() {
   const { register, handleSubmit, formState: { errors }, getValues, reset } = useForm<ncycle>()
   const { data: session, status } = useSession()
   const { id } = useParams()
   const router = useRouter()
-  const { toast } = useToast()
-  const [isDeleted, setIsDeleted] = useState(false) 
+  // Removed useToast
+
+  const [isDeleted, setIsDeleted] = useState(false)
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -23,7 +24,7 @@ export default function Page() {
   }, [status, router])
 
   useEffect(() => {
-    if (!id || isDeleted) return 
+    if (!id || isDeleted) return
 
     const fetchData = async () => {
       try {
@@ -33,11 +34,7 @@ export default function Page() {
         )
 
         if (!res.ok) {
-          toast({
-            title: 'Error',
-            description: 'Failed to fetch cycle data',
-            variant: 'destructive'
-          })
+          toast.error('Failed to fetch cycle data')
           return
         }
 
@@ -55,7 +52,7 @@ export default function Page() {
     }
 
     fetchData()
-  }, [id, reset, toast, isDeleted])
+  }, [id, reset, isDeleted])
 
   const onSubmit = async (formData: ncycle) => {
     const res = await fetch(
@@ -72,27 +69,19 @@ export default function Page() {
 
     if (!res.ok) {
       const err = await res.json()
-      toast({
-        title: 'Error',
-        description: err.message || 'Failed to update cycle',
-        variant: 'destructive'
-      })
+      toast.error(err.message || 'Failed to update cycle')
       return
     }
 
-    toast({
-      title: 'Success',
-      description: 'Cycle updated successfully!'
-    })
-
+    toast.success('Cycle updated successfully!')
     router.push('/dashboard/admin/admincycles')
   }
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm(`Are you sure you want to close the cycle: ${getValues('name')}?`);
-    if (!confirmDelete) return;
+    const confirmDelete = window.confirm(`Are you sure you want to close the cycle: ${getValues('name')}?`)
+    if (!confirmDelete) return
 
-    const link = `https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${id}`;
+    const link = `https://a2sv-application-platform-backend-team8.onrender.com/admin/cycles/${id}`
 
     const res = await fetch(link, {
       method: 'DELETE',
@@ -100,24 +89,15 @@ export default function Page() {
         'Content-Type': 'application/json',
         authorization: `Bearer ${session?.accessToken}`,
       },
-    });
+    })
 
     if (!res.ok) {
-      toast({
-        title: 'Failed to close cycle',
-        description: `Could not close cycle: ${id}`,
-        variant: 'destructive',
-      });
-      return;
+      toast.error(`Could not close cycle: ${id}`)
+      return
     }
 
-    toast({
-      title: 'Cycle closed successfully',
-      description: `Cycle "${getValues('name')}" has been closed.`,
-      variant: 'default',
-    });
-
-    setIsDeleted(true) // 🛑 Prevent refetch
+    toast('Cycle closed successfully')
+    setIsDeleted(true)
     router.push('/dashboard/admin/admincycles')
   }
 
@@ -186,7 +166,6 @@ export default function Page() {
             </Button>
           </div>
 
- 
           <div className="pt-8 border-t mt-8">
             <Button
               type="button"
