@@ -13,7 +13,6 @@ import { ChevronDown, Search, Loader2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useSession, signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { useToast } from "@/components/ui/use-toast";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import ApplicantDetailsReview from "./Review";
 
@@ -70,7 +69,6 @@ export default function ApplicationsTable({
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [isLoadingReviewers, setIsLoadingReviewers] = useState(false);
   const [showReviewerSubmenu, setShowReviewerSubmenu] = useState(false);
-  const { toast } = useToast();
   const [menuPosition, setMenuPosition] = useState<{
     top: number;
     right: number;
@@ -154,11 +152,7 @@ export default function ApplicationsTable({
     } catch (err) {
       console.error("Error in handleViewDetails:", err);
 
-      toast({
-        title: "Error!",
-        description: "Failed to load details",
-        variant: "destructive",
-      });
+      toast.error( "Failed to load details")
     }
   };
 
@@ -190,11 +184,8 @@ export default function ApplicationsTable({
       setMenuPosition(null);
     } catch (err) {
       console.error("Error in handleViewReview:", err);
-      toast({
-        title: "Error!",
-        description: "Failed to load review",
-        variant: "destructive",
-      });
+      toast.error("Failed to load review")
+      
     }
   };
 
