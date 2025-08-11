@@ -15,6 +15,7 @@ import { useSession, signIn } from "next-auth/react";
 import { toast } from "sonner";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import ApplicantDetailsReview from "./Review";
+import { toast } from "sonner";
 
 interface Application {
   id: string;
@@ -184,6 +185,7 @@ export default function ApplicationsTable({
       setMenuPosition(null);
     } catch (err) {
       console.error("Error in handleViewReview:", err);
+      toast.error("error")
       toast.error("Failed to load review")
       
     }

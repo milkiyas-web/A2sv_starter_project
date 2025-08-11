@@ -1,8 +1,5 @@
 "use client";
-import { useSession } from "next-auth/react";
-
 import { Button } from "@/components/ui/button";
-
 import {
   Card,
   CardAction,
@@ -13,535 +10,154 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import React from "react";
-import { useState } from "react";
+import Check from "./icons/Check";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/lib/redux/store";
+import Link from "next/link";
 
 const page = () => {
-  const { data: session } = useSession();
-
-  const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({
-    idNumber: "",
-    school: "",
-    degree: "",
-    country: "",
-    codeforces: "",
-    leetcode: "",
-    github: "",
-    about: "",
-    whyJoin: "",
-    resume: null as File | null,
-  });
-
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const router = useRouter();
 
   const userName = "John";
-  const percentComplete = 75;
-
-  const handleSubmit = async () => {
-    const isValid = validateStep(step);
-    if (!isValid) return;
-
-    const data = new FormData();
-
-    data.append("student_id", formData.idNumber);
-    data.append("school", formData.school);
-    data.append("degree", formData.degree);
-    data.append("country", formData.country);
-    data.append("codeforces_handle", formData.codeforces);
-    data.append("leetcode_handle", formData.leetcode);
-    data.append("essay_about_you", formData.about);
-    data.append("essay_why_a2sv", formData.whyJoin);
-
-    if (formData.resume) {
-      data.append("resume", formData.resume);
-    }
-
-    try {
-      const res = await fetch(
-        "https://a2sv-application-platform-backend-team8.onrender.com/applications/",
-        {
-          method: "POST",
-          body: data,
-          headers: {
-            Authorization:
-              session && session.accessToken
-                ? `Bearer ${session.accessToken}`
-                : "",
-          },
-        }
-      );
-
-      if (res.status === 409) {
-        alert(
-          "You have already submitted an application. Duplicate submissions are not allowed."
-        );
-        return;
-      }
-
-      if (!res.ok) throw new Error("Submission failed");
-
-      console.log("✅ Form submitted successfully");
-    } catch (err) {
-      console.error("❌ Error submitting form:", err);
-    }
-  };
-
-  function validateField(field: string, value: string | File | null) {
-    let error = "";
-    if (
-      [
-        "idNumber",
-        "school",
-        "degree",
-        "codeforces",
-        "leetcode",
-        "github",
-        "about",
-        "whyJoin",
-      ].includes(field)
-    ) {
-      if (!value || (typeof value === "string" && !value.trim())) {
-        error = "Required";
-      }
-    }
-    if (field === "resume") {
-      if (!value) error = "Please upload a resume";
-    }
-    setErrors((prev) => ({ ...prev, [field]: error }));
-    return error;
-  }
-
-  function validateStep(step: number) {
-    const newErrors: { [key: string]: string } = {};
-    if (step === 1) {
-      if (!formData.idNumber.trim()) newErrors.idNumber = "Required";
-      if (!formData.school.trim()) newErrors.school = "Required";
-      if (!formData.degree.trim()) newErrors.degree = "Required";
-    }
-    if (step === 2) {
-      if (!formData.codeforces.trim()) newErrors.codeforces = "Required";
-      if (!formData.leetcode.trim()) newErrors.leetcode = "Required";
-      if (!formData.github.trim()) newErrors.github = "Required";
-    }
-    if (step === 3) {
-      if (!formData.about.trim()) newErrors.about = "Required";
-      if (!formData.whyJoin.trim()) newErrors.whyJoin = "Required";
-      if (!formData.resume) newErrors.resume = "Please upload a resume";
-    }
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }
-  const handleNext = () => {
-    if (validateStep(step + 1)) {
-      setStep(step + 1);
-    }
-  };
-
-  const handleBack = () => {
-    if (step > 0) setStep(step - 1);
-  };
-
+  const profileCompletion = useSelector(
+    (state: RootState) => state.application.profileCompletion
+  );
+  const checklist = useSelector(
+    (state: RootState) => state.application.checklist
+  );
+  const formSteps = useSelector(
+    (state: RootState) => state.application.formSteps
+  );
   return (
-    <>
-      {step === 0 && (
-        <div className="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 md:px-8">
-          <div className="w-full max-w-[704px]">
-            {/* Top Section with Title and Progress */}
-            <Card className=" rounded-t-md rounded-b-none">
-              <CardHeader>
-                <CardTitle className="text-center text-xl font-semibold">
-                  Application Form
-                </CardTitle>
-                <div className="px-6">
+    <div className="max-w-[1280px] w-full mx-auto px-2 sm:px-4 md:px-8">
+      <div>
+        <Card className="bg-gray-100 border-none shadow-none">
+          <CardHeader>
+            <CardTitle className="text-2xl font-bold">
+              Welcome, {userName}!
+            </CardTitle>
+            <CardDescription>
+              Your journey to a global tech career starts now.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+
+      <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[611.5px] w-full">
+        <Card className="pl-4 pr-4 text-white bg-[linear-gradient(to_right,_#6366F1,_#9333EA)] h-[212px] flex-shrink-0 flex-grow-0 lg:flex-[2] mb-4 lg:mb-0">
+          <CardHeader className="p-2 text-white">
+            <CardTitle className="text-xl font-bold">
+              G7 November Intake
+            </CardTitle>
+            <CardDescription className="text-white">
+              {" "}
+              It's time to submit your application and show us your potential.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="flex flex-col gap-2 items-start">
+            <Button
+              type="submit"
+              onClick={() => {
+                router.push("/dashboard/applicant/apply");
+              }}
+              className="bg-white text-[#4F46E5] p-5 border-none outline-none hover:bg-[#ffffffe2] transition-colors"
+            >
+              Start Application
+            </Button>
+          </CardFooter>
+        </Card>
+        <div className="flex flex-col flex-1 gap-y-4 min-h-0">
+          <Card className="flex-1 flex flex-col bg-white shadow-md">
+            <CardHeader>
+              <CardTitle className="pb-1 font-bold text-lg">
+                Complete Your Profile
+              </CardTitle>
+              <CardDescription className="flex flex-col gap-2 font-semibold text-[#4F46E5]">
+                <p className="bg-[#C7D2FE] w-fit px-2 py-1.5 rounded-3xl">
+                  {profileCompletion}% COMPLETE
+                </p>
+                <div>
                   <Progress
                     className="[&>div]:bg-[#6366F1] bg-[#C7D2FE]"
-                    value={33}
+                    value={profileCompletion}
                   />
                 </div>
-                {/* Step Indicator */}
-                <div className="flex justify-between text-sm font-medium text-gray-500 mt-4 px-6">
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-[#6366F1] text-white flex items-center justify-center text-xs">
-                      1
-                    </div>
-                    <span className="mt-1 text-[#6366F1]">Personal Info</span>
+                <CardFooter className="p-0">
+                  <div className="flex items-center font-semibold ">
+                    <Link href="/dashboard/profile">Go to profile</Link>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                      />
+                    </svg>
                   </div>
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs">
-                      2
-                    </div>
-                    <span className="mt-1">Coding Profiles</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs">
-                      3
-                    </div>
-                    <span className="mt-1">Essays & Resume</span>
-                  </div>
+                </CardFooter>
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card className="flex-[2] flex flex-col bg-white shadow-md">
+            <CardHeader className="flex flex-col flex-1">
+              <CardTitle className="pb-1 font-bold text-lg">
+                Application Checklist
+              </CardTitle>
+              <CardDescription className="flex flex-1 flex-col justify-between">
+                <div className="flex items-center">
+                  <Check completed={formSteps.personal === "completed"} />
+                  <p className="pl-2">Fill Personal information</p>
                 </div>
-              </CardHeader>
-            </Card>
-            {/* Form Section */}
-            <Card className="rounded-b-md rounded-t-none p-4">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">
-                  Personal Information
-                </CardTitle>
-              </CardHeader>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
-                <div className="flex flex-col">
-                  <input
-                    onChange={(e) => {
-                      setFormData({ ...formData, idNumber: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("idNumber", e.target.value)}
-                    type="text"
-                    placeholder="ID Number"
-                    className={`border p-2 rounded ${errors.idNumber ? "border-red-500" : "border-gray-300"
-                      }`}
-                  />
-                  {errors.idNumber && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.idNumber}
-                    </p>
-                  )}
+                <div className="flex items-center">
+                  <Check completed={formSteps.coding === "completed"} />
+                  <p className="pl-2">Submit Coding Profiles</p>
                 </div>
-                <div className="flex flex-col">
-                  <input
-                    onChange={(e) => {
-                      setFormData({ ...formData, school: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("school", e.target.value)}
-                    type="text"
-                    placeholder="School / University"
-                    className={`border p-2 rounded ${errors.school ? "border-red-500" : "border-gray-300"
-                      }`}
-                  />
-                  {errors.school && (
-                    <p className="text-xs text-red-500 mt-1">{errors.school}</p>
-                  )}
+                <div className="flex items-center">
+                  <Check completed={formSteps.essay === "completed"} />
+                  <p className="pl-2">Write Essays</p>
                 </div>
-                <div className="flex flex-col sm:flex-row gap-4 col-span-full">
-                  <div className="flex flex-col flex-1">
-                    <input
-                      onChange={(e) => {
-                        setFormData({ ...formData, degree: e.target.value });
-                      }}
-                      onBlur={(e) => validateField("degree", e.target.value)}
-                      type="text"
-                      placeholder="Degree Program"
-                      className={`border p-2 rounded ${errors.degree ? "border-red-500" : "border-gray-300"
-                        }`}
-                    />
-                    {errors.degree && (
-                      <p className="text-xs text-red-500 mt-1">
-                        {errors.degree}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex flex-col flex-1">
-                    <input
-                      onChange={(e) => {
-                        setFormData({ ...formData, country: e.target.value });
-                      }}
-                      onBlur={(e) => validateField("country", e.target.value)}
-                      type="text"
-                      placeholder="Country"
-                      className={`border p-2 rounded ${errors.country ? "border-red-500" : "border-gray-300"
-                        }`}
-                    />
-                    {errors.country && (
-                      <p className="text-xs text-red-500 mt-1">
-                        {errors.country}
-                      </p>
-                    )}
-                  </div>
+                <div className="flex items-center">
+                  <Check completed={checklist.resume === "completed"} />
+                  <p className="pl-2">Upload Resume</p>
                 </div>
-              </div>
-              {/* Navigation Buttons */}
-              <div className="flex justify-between px-4 mt-6">
-                <button
-                  onClick={handleBack}
-                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
-                  disabled={step === 0}
+                <div className="flex items-center">
+                  <Check completed={checklist.profile === "completed"} />
+                  <p className="pl-2">Complete Profile</p>
+                </div>
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          <Card className="flex-1 flex flex-col bg-white shadow-md">
+            <CardHeader>
+              <CardTitle className="font-bold text-lg">
+                Helpful Resources
+              </CardTitle>
+              <CardFooter className="flex flex-col items-start p-0">
+                <Button
+                  variant="link"
+                  className="text-[#4F46E5] p-0 hover:no-underline"
                 >
-                  Back
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
+                  Tips for a Great Application
+                </Button>
+                <Button
+                  variant="link"
+                  className="text-[#4F46E5] p-0 hover:no-underline"
                 >
-                  Next: Coding Profiles
-                </button>
-              </div>
-            </Card>
-          </div>
+                  A2SV Problem Solving Guide
+                </Button>
+              </CardFooter>
+            </CardHeader>
+          </Card>
         </div>
-      )}
-
-      {step === 1 && (
-        <div className="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 md:px-8">
-          <div className="w-full max-w-[704px]">
-            {/* Top Section with Title and Progress */}
-            <Card className=" rounded-t-md rounded-b-none">
-              <CardHeader>
-                <CardTitle className="text-center text-xl font-semibold">
-                  Application Form
-                </CardTitle>
-                <div className="px-6">
-                  <Progress
-                    className="[&>div]:bg-[#6366F1] bg-[#C7D2FE]"
-                    value={66}
-                  />
-                </div>
-                {/* Step Indicator */}
-                <div className="flex justify-between text-sm font-medium text-gray-500 mt-4 px-6">
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs">
-                      1
-                    </div>
-                    <span className="mt-1 ">Personal Info</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-[#6366F1] text-white flex items-center justify-center text-xs">
-                      2
-                    </div>
-                    <span className="mt-1 text-[#6366F1]">Coding Profiles</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs">
-                      3
-                    </div>
-                    <span className="mt-1">Essays & Resume</span>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-            {/* Form Section */}
-            <Card className="rounded-b-md rounded-t-none p-4">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">
-                  Coding Profiles
-                </CardTitle>
-              </CardHeader>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
-                <div className="flex flex-col">
-                  <input
-                    onChange={(e) => {
-                      setFormData({ ...formData, codeforces: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("codeforces", e.target.value)}
-                    type="text"
-                    placeholder="Codeforces"
-                    className={`border p-2 rounded ${errors.codeforces ? "border-red-500" : "border-gray-300"
-                      }`}
-                  />
-                  {errors.codeforces && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.codeforces}
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-col">
-                  <input
-                    onChange={(e) => {
-                      setFormData({ ...formData, leetcode: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("leetcode", e.target.value)}
-                    type="text"
-                    placeholder="LeetCode"
-                    className={`border p-2 rounded ${errors.leetcode ? "border-red-500" : "border-gray-300"
-                      }`}
-                  />
-                  {errors.leetcode && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.leetcode}
-                    </p>
-                  )}
-                </div>
-                <div className="flex flex-col col-span-full">
-                  <input
-                    onChange={(e) => {
-                      setFormData({ ...formData, github: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("github", e.target.value)}
-                    type="text"
-                    placeholder="Github"
-                    className={`border p-2 rounded ${errors.github ? "border-red-500" : "border-gray-300"
-                      }`}
-                  />
-                  {errors.github && (
-                    <p className="text-xs text-red-500 mt-1">{errors.github}</p>
-                  )}
-                </div>
-              </div>
-              {/* Navigation Buttons */}
-              <div className="flex justify-between px-4 mt-6">
-                <button
-                  onClick={handleBack}
-                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={handleNext}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
-                >
-                  Next: Essay and Resumes
-                </button>
-              </div>
-            </Card>
-          </div>
-        </div>
-      )}
-      {step === 2 && (
-        <div className="flex items-center justify-center min-h-screen w-full px-2 sm:px-4 md:px-8">
-          <div className="w-full max-w-[704px]">
-            {/* Top Section with Title and Progress */}
-            <Card className=" rounded-t-md rounded-b-none">
-              <CardHeader>
-                <CardTitle className="text-center text-xl font-semibold">
-                  Application Form
-                </CardTitle>
-                <div className="px-6">
-                  <Progress
-                    className="[&>div]:bg-[#6366F1] bg-[#C7D2FE]"
-                    value={100}
-                  />
-                </div>
-                {/* Step Indicator */}
-                <div className="flex justify-between text-sm font-medium text-gray-500 mt-4 px-6">
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs">
-                      1
-                    </div>
-                    <span className="mt-1 ">Personal Info</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-gray-300 text-white flex items-center justify-center text-xs">
-                      2
-                    </div>
-                    <span className="mt-1">Coding Profiles</span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <div className="w-6 h-6 rounded-full bg-[#6366F1] text-white flex items-center justify-center text-xs">
-                      3
-                    </div>
-                    <span className="mt-1 text-[#6366F1]">Essays & Resume</span>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-            {/* Form Section */}
-            <Card className="rounded-b-md rounded-t-none p-4">
-              <CardHeader>
-                <CardTitle className="text-lg font-semibold">
-                  Essays & Resume
-                </CardTitle>
-              </CardHeader>
-              <div className="flex flex-col gap-6 px-6">
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="about"
-                    className="mb-2 text-sm font-medium text-gray-700"
-                  >
-                    Tell us about yourself.
-                  </label>
-                  <textarea
-                    onChange={(e) => {
-                      setFormData({ ...formData, about: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("about", e.target.value)}
-                    id="about"
-                    name="about"
-                    rows={4}
-                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.about ? "border-red-500" : "border-gray-300"
-                      }`}
-                    placeholder="Write something about yourself..."
-                  />
-                  {errors.about && (
-                    <p className="text-xs text-red-500 mt-1">{errors.about}</p>
-                  )}
-                </div>
-
-                {/* Why do you want to join us? */}
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="whyJoin"
-                    className="mb-2 text-sm font-medium text-gray-700"
-                  >
-                    Why do you want to Join us?
-                  </label>
-                  <textarea
-                    onChange={(e) => {
-                      setFormData({ ...formData, whyJoin: e.target.value });
-                    }}
-                    onBlur={(e) => validateField("whyJoin", e.target.value)}
-                    id="whyJoin"
-                    name="whyJoin"
-                    rows={4}
-                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.whyJoin ? "border-red-500" : "border-gray-300"
-                      }`}
-                    placeholder="Explain your motivation..."
-                  />
-                  {errors.whyJoin && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.whyJoin}
-                    </p>
-                  )}
-                </div>
-
-                {/* Resume upload */}
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="resume"
-                    className="mb-2 text-sm font-medium text-gray-700"
-                  >
-                    Resume
-                  </label>
-                  <input
-                    onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        resume: e.target.files?.[0] || null,
-                      });
-                    }}
-                    onBlur={(e) =>
-                      validateField("resume", e.target.files?.[0] || null)
-                    }
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    id="resume"
-                    name="resume"
-                    className={`file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 ${errors.resume ? "border-red-500" : ""
-                      }`}
-                  />
-                  {errors.resume && (
-                    <p className="text-xs text-red-500 mt-1">{errors.resume}</p>
-                  )}
-                </div>
-              </div>
-
-              {/* Navigation Buttons */}
-              <div className="flex justify-between px-4 mt-6">
-                <button
-                  onClick={handleBack}
-                  className="bg-gray-200 text-gray-600 py-2 px-4 rounded hover:bg-gray-300"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={handleSubmit}
-                  className="bg-indigo-600 text-white py-2 px-4 rounded"
-                >
-                  Submit
-                </button>
-              </div>
-            </Card>
-          </div>
-        </div>
-      )}
-    </>
+      </div>
+    </div>
   );
 };
 

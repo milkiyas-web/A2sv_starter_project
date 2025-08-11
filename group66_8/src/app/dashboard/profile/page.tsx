@@ -132,6 +132,7 @@ function UserProfile() {
 
       resetPassword();
 
+
       toast.success("Password changed successfully!")
     } catch (err) {
       if (err instanceof Error) {
@@ -221,6 +222,7 @@ function UserProfile() {
           </div>
         </div>
 
+
         <div className="pt-20 sm:pt-24 px-4 sm:px-6 pb-8">
           <h2 className="text-xl sm:text-2xl font-semibold mb-4">Personal Information</h2>
           {data?.success && data.data ? (
@@ -271,6 +273,7 @@ function UserProfile() {
                   {isProfileLoading ? "Saving..." : "Save Changes"}
                 </Button>
               </form>
+
 
               <div className="mt-6 flex flex-col">
                 <h3 className="text-lg font-semibold mb-2">Change Password</h3>

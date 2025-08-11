@@ -134,6 +134,7 @@ export default function ManagerDashboard() {
       }
 
       const data: ApplicationsResponse = await response.json();
+      console.log(data, "data")
       setApplications(data?.data.applications || []);
       setPagination({
         page: data?.data.page,
