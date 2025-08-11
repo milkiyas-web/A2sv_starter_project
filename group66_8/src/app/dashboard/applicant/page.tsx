@@ -37,26 +37,6 @@ const page = () => {
   const userName = "John";
   const percentComplete = 75;
 
-<<<<<<< HEAD
-  const profileCompletion = useSelector(
-    (s: RootState) => s.application?.profileCompletion
-  );
-  const userName =
-    (session?.user as any)?.name ??
-    (session?.user as any)?.email?.split("@")[0] ??
-    "Applicant";
-  console.log(session.user)
-  const percentComplete =
-    typeof profileCompletion === "number" && profileCompletion > 0
-      ? profileCompletion
-      : Math.round(
-        ((personalDone ? 1 : 0) +
-          (codingDone ? 1 : 0) +
-          (essayDone ? 1 : 0) +
-          (resumeDone ? 1 : 0)) /
-        4 *
-        100
-=======
   const handleSubmit = async () => {
     const isValid = validateStep(step);
     if (!isValid) return;
@@ -89,7 +69,6 @@ const page = () => {
                 : "",
           },
         }
->>>>>>> 855722e4636bc0f5f8c378c013683555baf6624c
       );
 
       if (res.status === 409) {
@@ -218,9 +197,8 @@ const page = () => {
                     onBlur={(e) => validateField("idNumber", e.target.value)}
                     type="text"
                     placeholder="ID Number"
-                    className={`border p-2 rounded ${
-                      errors.idNumber ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.idNumber ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.idNumber && (
                     <p className="text-xs text-red-500 mt-1">
@@ -236,9 +214,8 @@ const page = () => {
                     onBlur={(e) => validateField("school", e.target.value)}
                     type="text"
                     placeholder="School / University"
-                    className={`border p-2 rounded ${
-                      errors.school ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.school ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.school && (
                     <p className="text-xs text-red-500 mt-1">{errors.school}</p>
@@ -253,9 +230,8 @@ const page = () => {
                       onBlur={(e) => validateField("degree", e.target.value)}
                       type="text"
                       placeholder="Degree Program"
-                      className={`border p-2 rounded ${
-                        errors.degree ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`border p-2 rounded ${errors.degree ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
                     {errors.degree && (
                       <p className="text-xs text-red-500 mt-1">
@@ -271,9 +247,8 @@ const page = () => {
                       onBlur={(e) => validateField("country", e.target.value)}
                       type="text"
                       placeholder="Country"
-                      className={`border p-2 rounded ${
-                        errors.country ? "border-red-500" : "border-gray-300"
-                      }`}
+                      className={`border p-2 rounded ${errors.country ? "border-red-500" : "border-gray-300"
+                        }`}
                     />
                     {errors.country && (
                       <p className="text-xs text-red-500 mt-1">
@@ -358,9 +333,8 @@ const page = () => {
                     onBlur={(e) => validateField("codeforces", e.target.value)}
                     type="text"
                     placeholder="Codeforces"
-                    className={`border p-2 rounded ${
-                      errors.codeforces ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.codeforces ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.codeforces && (
                     <p className="text-xs text-red-500 mt-1">
@@ -376,9 +350,8 @@ const page = () => {
                     onBlur={(e) => validateField("leetcode", e.target.value)}
                     type="text"
                     placeholder="LeetCode"
-                    className={`border p-2 rounded ${
-                      errors.leetcode ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.leetcode ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.leetcode && (
                     <p className="text-xs text-red-500 mt-1">
@@ -394,9 +367,8 @@ const page = () => {
                     onBlur={(e) => validateField("github", e.target.value)}
                     type="text"
                     placeholder="Github"
-                    className={`border p-2 rounded ${
-                      errors.github ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border p-2 rounded ${errors.github ? "border-red-500" : "border-gray-300"
+                      }`}
                   />
                   {errors.github && (
                     <p className="text-xs text-red-500 mt-1">{errors.github}</p>
@@ -483,9 +455,8 @@ const page = () => {
                     id="about"
                     name="about"
                     rows={4}
-                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                      errors.about ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.about ? "border-red-500" : "border-gray-300"
+                      }`}
                     placeholder="Write something about yourself..."
                   />
                   {errors.about && (
@@ -509,9 +480,8 @@ const page = () => {
                     id="whyJoin"
                     name="whyJoin"
                     rows={4}
-                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${
-                      errors.whyJoin ? "border-red-500" : "border-gray-300"
-                    }`}
+                    className={`border rounded p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.whyJoin ? "border-red-500" : "border-gray-300"
+                      }`}
                     placeholder="Explain your motivation..."
                   />
                   {errors.whyJoin && (
@@ -543,9 +513,8 @@ const page = () => {
                     accept=".pdf,.doc,.docx"
                     id="resume"
                     name="resume"
-                    className={`file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 ${
-                      errors.resume ? "border-red-500" : ""
-                    }`}
+                    className={`file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500 ${errors.resume ? "border-red-500" : ""
+                      }`}
                   />
                   {errors.resume && (
                     <p className="text-xs text-red-500 mt-1">{errors.resume}</p>
