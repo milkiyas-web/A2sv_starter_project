@@ -2,42 +2,26 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardAction,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import React from "react";
+import React, { useState } from "react";
 import Check from "./icons/Check";
 import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "@/lib/redux/store";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
 
 const page = () => {
   const router = useRouter();
-  const { data: session } = useSession();
-
-  const formSteps = useSelector((s: RootState) => s.application?.formSteps);
-  const resumeStatus = useSelector((s: RootState) => s.application?.checklist.resume);
-
-  const hasAccount = !!session?.user;
-  const personalDone = formSteps?.personal === "completed";
-  const codingDone = formSteps?.coding === "completed";
-  const essayDone = formSteps?.essay === "completed";
-  const resumeDone = resumeStatus === "completed";
-
-  const green = "text-green-600";
-  const gray = "text-gray-300";
 
   const userName = "John";
   const percentComplete = 75;
   return (
-    <div className="w-[1280px] m-auto">
+    <div className="max-w-[1280px] w-full mx-auto px-2 sm:px-4 md:px-8">
       <div>
-        <Card className="bg-gray-100 border-none shadow-none mb-8">
+        <Card className="bg-gray-100 border-none shadow-none">
           <CardHeader>
             <CardTitle className="text-2xl font-bold">
               Welcome, {userName}!
@@ -49,8 +33,8 @@ const page = () => {
         </Card>
       </div>
 
-      <div className="h-[611.5px] m-auto flex w-[1216] gap-x-6">
-        <Card className="pl-4 r-4  text-white bg-[linear-gradient(to_right,_#6366F1,_#9333EA)] h-[212px] flex-2">
+      <div className="flex flex-col lg:flex-row gap-6 h-auto lg:h-[611.5px] w-full">
+        <Card className="pl-4 pr-4 text-white bg-[linear-gradient(to_right,_#6366F1,_#9333EA)] h-[212px] flex-shrink-0 flex-grow-0 lg:flex-[2] mb-4 lg:mb-0">
           <CardHeader className="p-2 text-white">
             <CardTitle className="text-xl font-bold">
               G7 November Intake
@@ -66,21 +50,14 @@ const page = () => {
               onClick={() => {
                 router.push("/dashboard/applicant/apply");
               }}
-              className="bg-white text-[#4F46E5] p-5 border-none outline-none hover:bg-[#ffffffe2] transition-colors cursor-pointer"
+              className="bg-white text-[#4F46E5] p-5 border-none outline-none hover:bg-[#ffffffe2] transition-colors"
             >
               Start Application
             </Button>
           </CardFooter>
         </Card>
         <div className="flex flex-col flex-1 gap-y-4 min-h-0">
-          <Card
-            className="flex-1 flex flex-col"
-            style={{
-              backgroundColor: "#ffffff",
-              boxShadow:
-                "0px 8px 10px -6px rgba(0,0,0,0.10), 0px 20px 25px -5px rgba(0,0,0,0.10)",
-            }}
-          >
+          <Card className="flex-1 flex flex-col bg-white shadow-md">
             <CardHeader>
               <CardTitle className="pb-1 font-bold text-lg">
                 Complete Your Profile
@@ -96,100 +73,74 @@ const page = () => {
                   />
                 </div>
                 <CardFooter className="p-0">
-                  <Link href="/dashboard/profile">
-                    <div className="flex items-center font-semibold ">
-                      Go to profile
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-4"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                        />
-                      </svg>
-                    </div>
-                  </Link>
+                  <div className="flex items-center font-semibold ">
+                    Go to profile
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                      />
+                    </svg>
+                  </div>
                 </CardFooter>
               </CardDescription>
             </CardHeader>
           </Card>
-          <Card
-            className="flex-[2] flex flex-col"
-            style={{
-              backgroundColor: "#ffffff",
-              boxShadow:
-                "0px 8px 10px -6px rgba(0,0,0,0.10), 0px 20px 25px -5px rgba(0,0,0,0.10)",
-            }}
-          >
+          <Card className="flex-[2] flex flex-col bg-white shadow-md">
             <CardHeader className="flex flex-col flex-1">
               <CardTitle className="pb-1 font-bold text-lg">
                 Application Checklist
               </CardTitle>
               <CardDescription className="flex flex-1 flex-col justify-between">
                 <div className="flex items-center">
-                  <span className={hasAccount ? green : gray}>
-                    <Check />
-                  </span>
+                  <Check />
                   <p className="pl-2">Create an Account</p>
                 </div>
                 <div className="flex items-center">
-                  <span className={personalDone ? green : gray}>
-                    <Check />
-                  </span>
+                  <Check />
                   <p className="pl-2">Fill Personal information</p>
                 </div>
                 <div className="flex items-center">
-                  <span className={codingDone ? green : gray}>
-                    <Check />
-                  </span>
+                  <Check />
                   <p className="pl-2">Submit Coding Profiles</p>
                 </div>
                 <div className="flex items-center">
-                  <span className={essayDone ? green : gray}>
-                    <Check />
-                  </span>
+                  <Check />
                   <p className="pl-2">Write Essays</p>
                 </div>
                 <div className="flex items-center">
-                  <span className={resumeDone ? green : gray}>
-                    <Check />
-                  </span>
+                  <Check />
                   <p className="pl-2">Upload Resume</p>
                 </div>
               </CardDescription>
             </CardHeader>
           </Card>
-          <Card
-            className="flex-1 flex flex-col"
-            style={{
-              backgroundColor: "#ffffff",
-              boxShadow:
-                "0px 8px 10px -6px rgba(0,0,0,0.10), 0px 20px 25px -5px rgba(0,0,0,0.10)",
-            }}
-          >
+          <Card className="flex-1 flex flex-col bg-white shadow-md">
             <CardHeader>
               <CardTitle className="font-bold text-lg">
                 Helpful Resources
               </CardTitle>
               <CardFooter className="flex flex-col items-start p-0">
-                <Link
-                  href="/tips-for-great-application" // update with actual path
-                  className="text-[#4F46E5] p-0 hover:no-underline font-semibold"
+                <Button
+                  variant="link"
+                  className="text-[#4F46E5] p-0 hover:no-underline"
                 >
                   Tips for a Great Application
-                </Link>
-                <Link
-                  href="/a2sv-problem-solving-guide" // update with actual path
-                  className="text-[#4F46E5] p-0 hover:no-underline mt-1 font-semibold"
+                </Button>
+                <Button
+                  variant="link"
+                  className="text-[#4F46E5] p-0 hover:no-underline"
                 >
                   A2SV Problem Solving Guide
-                </Link>
+                </Button>
               </CardFooter>
             </CardHeader>
           </Card>
