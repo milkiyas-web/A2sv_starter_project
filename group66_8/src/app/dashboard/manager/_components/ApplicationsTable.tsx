@@ -15,7 +15,6 @@ import { useSession, signIn } from "next-auth/react";
 import { toast } from "sonner";
 import ApplicationDetailsModal from "./ApplicationDetailsModal";
 import ApplicantDetailsReview from "./Review";
-import { toast } from "sonner";
 
 interface Application {
   id: string;
