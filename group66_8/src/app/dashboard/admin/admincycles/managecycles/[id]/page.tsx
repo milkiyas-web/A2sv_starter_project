@@ -170,9 +170,9 @@ export default function Page() {
             <Button
               type="button"
               onClick={handleDelete}
-              className="w-full py-3 px-6 text-lg bg-black rounded-lg cursor-pointer transition-all duration-200"
+              className="w-full py-3 px-6 text-lg bg-[#4F46E5] hover:bg-[#4F46E5]/90 text-white rounded-lg cursor-pointer transition-all duration-200"
             >
-              Delete Cycle
+              Close Cycle
             </Button>
           </div>
         </form>
