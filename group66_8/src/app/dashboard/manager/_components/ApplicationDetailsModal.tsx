@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 interface ApplicantDetails {
@@ -67,7 +67,6 @@ export default function ApplicationDetailsModal({
   const [isRejecting, setIsRejecting] = useState(false);
   const [isConfirming, setIsConfirming] = useState(false);
   const router = useRouter();
-  const { toast } = useToast();
 
   if (!application) {
     return null;
@@ -121,20 +120,12 @@ export default function ApplicationDetailsModal({
         );
       }
 
-      toast({
-        title: "Success!",
-        description: "Reviewer assigned successfully",
-        variant: "default", // optional, defaults to 'default'
-      });
+      toast.success("Reviewer assigned successfully");
       onStatusChange();
     } catch (err) {
       console.error("Assignment error:", err);
 
-      toast({
-        title: "Error!",
-        description: "Failed to assign reviewer",
-        variant: "destructive",
-      });
+      toast.error("Failed to assign reviewer");
     } finally {
       setIsConfirming(false);
     }
@@ -180,20 +171,13 @@ export default function ApplicationDetailsModal({
         );
       }
 
-      toast({
-        title: "Success!",
-        description: `Application ${decision} successfully`,
-        variant: "default", // optional, defaults to 'default'
-      });
+      toast.success( `Application ${decision} successfully`);
       onStatusChange();
       onClose();
     } catch (err) {
       console.error("Decision error:", err);
-      toast({
-        title: "Error!",
-        description: `Failed to ${decision} application`,
-        variant: "destructive",
-      });
+      toast.error( `Failed to ${decision} application`);
+      
     } finally {
       setIsAccepting(false);
       setIsRejecting(false);
