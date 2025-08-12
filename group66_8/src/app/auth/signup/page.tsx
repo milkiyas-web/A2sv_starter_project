@@ -30,7 +30,7 @@ const PasswordStrengthIndicator = ({ password }: { password: string }) => {
 
     if (score <= 2) return { level: "weak", color: "bg-red-500", text: "Weak" };
     if (score <= 4) return { level: "fair", color: "bg-yellow-500", text: "Fair" };
-    if (score <= 5) return { level: "good", color: "bg-blue-500", text: "Good" };
+    if (score <= 5) return { level: "good", color: "bg-[#352dd8]", text: "Good" };
     return { level: "strong", color: "bg-green-500", text: "Strong" };
   };
 
@@ -61,7 +61,7 @@ const PasswordStrengthIndicator = ({ password }: { password: string }) => {
         </div>
         <span className={`text-xs font-medium ${strength.level === "weak" ? "text-red-600" :
           strength.level === "fair" ? "text-yellow-600" :
-            strength.level === "good" ? "text-blue-600" :
+            strength.level === "good" ? "text-[#352dd8]" :
               "text-green-600"
           }`}>
           {strength.text}
@@ -224,7 +224,7 @@ export default function RoleSignUpPage() {
           <h2 className="text-lg font-extrabold">Create a new account</h2>
           <p className="text-sm text-gray-600 mt-1">
             Or{" "}
-            <Link href="/auth/signin-user" className="text-blue-600 ">
+            <Link href="/auth/signin-user" className="text-[#352dd8] ">
               sign in with your account
             </Link>
           </p>
@@ -238,7 +238,7 @@ export default function RoleSignUpPage() {
             <Input
               placeholder="Full name"
               {...register("fullName")}
-              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.fullName ? "border-red-500" : ""
+              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-[#352dd8] ${errors.fullName ? "border-red-500" : ""
                 }`}
               aria-invalid={errors.fullName ? "true" : "false"}
             />
@@ -262,7 +262,7 @@ export default function RoleSignUpPage() {
                 register("email").ref(e);
                 emailRef.current = e;
               }}
-              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.email ? "border-red-500" : ""
+              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-[#352dd8] ${errors.email ? "border-red-500" : ""
                 }`}
               aria-invalid={errors.email ? "true" : "false"}
             />
@@ -288,7 +288,7 @@ export default function RoleSignUpPage() {
               type="password"
               placeholder="Password"
               {...register("password")}
-              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.password ? "border-red-500" : ""
+              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-[#352dd8] ${errors.password ? "border-red-500" : ""
                 }`}
               aria-invalid={errors.password ? "true" : "false"}
             />
@@ -309,7 +309,7 @@ export default function RoleSignUpPage() {
               type="password"
               placeholder="Confirm your Password"
               {...register("confirmPassword")}
-              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-blue-500 ${errors.confirmPassword ? "border-red-500" : ""
+              className={`border-gray-200 border-2 bg-white rounded-sm focus:outline-none focus:ring-1 focus:ring-[#352dd8] ${errors.confirmPassword ? "border-red-500" : ""
                 }`}
               aria-invalid={errors.confirmPassword ? "true" : "false"}
             />
@@ -323,7 +323,7 @@ export default function RoleSignUpPage() {
 
           <Button
             type="submit"
-            className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white hover:cursor-pointer"
+            className="w-full mt-6 bg-[#352dd8] hover:bg-[#352dd8] text-white hover:cursor-pointer"
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -356,8 +356,8 @@ export default function RoleSignUpPage() {
           </Button>
 
           <div className="mt-4 p-3 bg-blue-50 rounded-md border border-blue-200">
-            <h4 className="text-sm font-medium text-blue-800 mb-2">Password Requirements:</h4>
-            <ul className="text-xs text-blue-700 space-y-1">
+            <h4 className="text-sm font-medium text-[#352dd8] mb-2">Password Requirements:</h4>
+            <ul className="text-xs text-[#352dd8] space-y-1">
               <li>• Minimum 8 characters (12+ recommended)</li>
               <li>• Must contain uppercase and lowercase letters</li>
               <li>• Must contain at least one number</li>
