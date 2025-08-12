@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useSession, signIn } from "next-auth/react";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -120,12 +121,12 @@ export default function ApplicationDetailsModal({
         );
       }
 
-      toast.success("Success")
+      toast.success("Reviewer assigned successfully");
       onStatusChange();
     } catch (err) {
       console.error("Assignment error:", err);
 
-      toast.error("error occured")
+      toast.error("Failed to assign reviewer");
     } finally {
       setIsConfirming(false);
     }
@@ -171,12 +172,13 @@ export default function ApplicationDetailsModal({
         );
       }
 
-      toast.success("success")
+      toast.success( `Application ${decision} successfully`);
       onStatusChange();
       onClose();
     } catch (err) {
       console.error("Decision error:", err);
-      toast.error("error occured")
+      toast.error( `Failed to ${decision} application`);
+      
     } finally {
       setIsAccepting(false);
       setIsRejecting(false);
