@@ -248,7 +248,7 @@ function UserProfile() {
                 <Button
                   type="button"
                   className="w-full sm:w-auto bg-[#4F46E5] hover:bg-[#4338CA] text-white"
-                  onClick={() => router.push(getDashboardRoute(role))}
+                  onClick={() => router.push(getDashboardRoute(data?.data?.role))}
                 >
                   Go to Dashboard
                 </Button>

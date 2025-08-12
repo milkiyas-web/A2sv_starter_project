@@ -15,8 +15,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     const { data: session, status } = useSession();
-    let role = session?.user?.role || session?.role;
-    role = role?.toLowerCase();
+    let role = (session?.user as any)?.role || (session as any)?.role;
+    role = typeof role === "string" ? role.toLowerCase() : undefined;
     let NavComponent = null;
     if (role === "admin") NavComponent = <AdminNav />;
     else if (role === "reviewer") NavComponent = <ReviewerNav />;
