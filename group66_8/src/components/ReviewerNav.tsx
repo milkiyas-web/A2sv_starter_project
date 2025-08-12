@@ -12,7 +12,7 @@ const ReviewerNav = () => {
     const path = usePathname()
     const { data: session } = useSession()
     const [isOpen, setIsOpen] = useState(false)
-    const userName = session?.user?.name || 'Manager'
+    const userName = session?.user?.name || 'Reviewer'
 
     useEffect(() => setIsOpen(false), [path])
 
